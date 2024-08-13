@@ -1,13 +1,17 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
 import NavigationRight from '@/components/navigation/NavigationRight.vue';
 import NavigationTop from '@/components/navigation/NavigationTop.vue';
-
-import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
 const isMainPage = ref(route.path === '/');
+
+watch(route, (newRoute) => {
+    isMainPage.value = newRoute.path === '/';
+});
 
 </script>
 

@@ -1,5 +1,5 @@
 <script setup>
-import { SidebarConfig } from '@/config';
+import { NavigationTopConfig } from '@/config';
 
 const items = [
     [{
@@ -39,7 +39,7 @@ const items = [
                             alt="logo" class="w-full h-full object-cover" />
                     </div>
                 </div>
-                <template v-for="item in SidebarConfig.sections" :key="index">
+                <template v-for="item in NavigationTopConfig.sections" :key="index">
                     <NuxtLink role="button" :to="item.path"
                         :class="{ 'font-bold': $route.path === item.path, 'text-muted-foreground': $route.path !== item.path }"
                         class="text-base btn">

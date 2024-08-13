@@ -5,10 +5,10 @@ export const SiteConfig = {
     Language: 'zh-CN',
 };
 
-export const SidebarConfig = {
+export const NavigationTopConfig = {
     sections: [
         {
-            name: '首页',
+            name: 'home',
             icon: 'mdi:home',
             path: '/'
         },
@@ -18,3 +18,5 @@ export const SidebarConfig = {
         text: '© {{date}} 星雲草堂SeiunSodou.'
     }
 };
+
+export const Api_Endpoint = 'http://localhost:5000';

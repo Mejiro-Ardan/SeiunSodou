@@ -11,14 +11,14 @@
                 </div>
                 <div class="space-y-4">
                     <div class="space-y-2">
-                        <label class="input flex items-center gap-2">
+                        <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:mail-outline" />
                             <input type="text" class="grow border-none focus:ring-0"
                                 :placeholder="$t('emailPlaceholder')" />
                         </label>
                     </div>
                     <div class="space-y-2">
-                        <label class="input flex items-center gap-2">
+                        <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:password" />
                             <input type="password" class="grow border-none focus:ring-0" value="password"
                                 :placeholder="$t('passwordPlaceholder')" />

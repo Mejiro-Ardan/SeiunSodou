@@ -23,7 +23,22 @@ export default defineI18nConfig(() => ({
             'joinUs': 'Join Us',
             'joinDescription': 'Become a part of our community and enjoy more exciting content.',
             'captchaSent': 'Captcha has been sent to your email.',
-            'captchaAlreadySent': 'Captcha has been sent to your email.'
+            'passwordsDoNotMatch': 'Passwords do not match',
+            'invalidEmail': 'Please enter a valid email address.',
+            'invalidPassword': 'Password must be at least 8 characters long and include both letters and numbers.',
+            'user_not_exist': "User does not exist",
+            'login_success': "Login successful",
+            'login_failed': "Login failed",
+            'email_registered': "Email has been registered",
+            'verification_code_error': "Verification code error or system error",
+            'registration_success': "Registration success",
+            'token_expired': "The token is expired",
+            'token_invalid': "The token is invalid",
+            'captcha_sent': "Captcha has been sent successfully",
+            'wait_before_resend': "Please wait [wait_time] seconds before sending again",
+            'redirecting_to_login': "Registration completed successfully. You are being redirected to the login page.",
+            'agreeToTerms': 'I agree to the user terms and privacy policy',
+            'termsAndConditions': 'User Terms and Privacy Policy'
         },
         'zh-cn': {
             'home': '首页',
@@ -46,7 +61,22 @@ export default defineI18nConfig(() => ({
             'joinUs': '加入我们',
             'joinDescription': '成为我们社区的一员，体验更多精彩内容。',
             'captchaSent': '验证码已发送，请查收邮件。',
-            'captchaAlreadySent': '验证码已发送，请查收邮件。'
+            'passwordsDoNotMatch': '密码不匹配',
+            'invalidEmail': '请输入有效的电子邮件地址。',
+            'invalidPassword': '密码必须至少包含8个字符，并包含字母和数字。',
+            'user_not_exist': "失败：用户不存在",
+            'login_success': "成功：登录成功",
+            'login_failed': "失败：登录失败",
+            'email_registered': "失败：电子邮件已被注册",
+            'verification_code_error': "失败：验证码错误或系统错误",
+            'registration_success': "成功：注册成功",
+            'token_expired': "失败：令牌已过期",
+            'token_invalid': "失败：令牌无效",
+            'captcha_sent': "验证码已成功发送",
+            'wait_before_resend': "请等待 [wait_time] 秒再发送",
+            'redirecting_to_login': "注册完成，正在重定向到登录页面...",
+            'agreeToTerms': '我同意用户条款和隐私政策',
+            'termsAndConditions': '用户条款和隐私政策'
         },
         'jp-ja': {
             'home': 'ホーム',
@@ -69,7 +99,22 @@ export default defineI18nConfig(() => ({
             'joinUs': '参加する',
             'joinDescription': '私たちのコミュニティに参加して、よりエキサイティングなコンテンツをお楽しみください。',
             'captchaSent': 'キャプチャがメールに送信されました。',
-            'captchaAlreadySent': 'キャプチャがメールに送信されました。'
+            'passwordsDoNotMatch': 'パスワードが一致しません',
+            'invalidEmail': '有効なメールアドレスを入力してください。',
+            'invalidPassword': 'パスワードは8文字以上で、文字と数字を含める必要があります。',
+            'user_not_exist': "失敗：ユーザーが存在しません",
+            'login_success': "成功：ログイン成功",
+            'login_failed': "失敗：ログイン失敗",
+            'email_registered': "失敗：メールアドレスはすでに登録されています",
+            'verification_code_error': "失敗：認証コードエラーまたはシステムエラー",
+            'registration_success': "成功：登録成功",
+            'token_expired': "失敗：トークンが期限切れです",
+            'token_invalid': "失敗：トークンが無効です",
+            'captcha_sent': "キャプチャが正常に送信されました",
+            'wait_before_resend': "[wait_time] 秒後に再送信してください",
+            'redirecting_to_login': "登録が完了しました。ログインページにリダイレクトしています...",
+            'agreeToTerms': '利用規約およびプライバシーポリシーに同意します',
+            'termsAndConditions': '利用規約およびプライバシーポリシー'
         }
     }
 }))
