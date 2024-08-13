@@ -1,6 +1,6 @@
 export const SiteConfig = {
-    title: '星雲草堂 SeiunSodou',
-    description: '私たちの物語を再び書く',
+    title: '星雲草堂SeiunSodou',
+    description: '私たちの物語を再描く',
     SiteURL: 'https://moefan.top',
     Language: 'zh-CN',
 };
