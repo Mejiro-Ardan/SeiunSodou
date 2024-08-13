@@ -22,7 +22,8 @@ export default defineI18nConfig(() => ({
             'alreadyHaveAccount': 'Already have an account?',
             'joinUs': 'Join Us',
             'joinDescription': 'Become a part of our community and enjoy more exciting content.',
-            'captchaSent': 'Captcha has been sent to your email.'
+            'captchaSent': 'Captcha has been sent to your email.',
+            'captchaAlreadySent': 'Captcha has been sent to your email.'
         },
         'zh-cn': {
             'home': '首页',
@@ -44,7 +45,8 @@ export default defineI18nConfig(() => ({
             'alreadyHaveAccount': '已经有账号了？',
             'joinUs': '加入我们',
             'joinDescription': '成为我们社区的一员，体验更多精彩内容。',
-            'captchaSent': '验证码已发送到您的邮箱。'
+            'captchaSent': '验证码已发送，请查收邮件。',
+            'captchaAlreadySent': '验证码已发送，请查收邮件。'
         },
         'jp-ja': {
             'home': 'ホーム',
@@ -66,7 +68,8 @@ export default defineI18nConfig(() => ({
             'alreadyHaveAccount': '既にアカウントをお持ちですか？',
             'joinUs': '参加する',
             'joinDescription': '私たちのコミュニティに参加して、よりエキサイティングなコンテンツをお楽しみください。',
-            'captchaSent': 'キャプチャがメールに送信されました。'
+            'captchaSent': 'キャプチャがメールに送信されました。',
+            'captchaAlreadySent': 'キャプチャがメールに送信されました。'
         }
     }
 }))

@@ -30,15 +30,14 @@ onMounted(() => {
         });
     });
 });
-
 const sendCaptcha = () => {
     if (captchaStore.isCaptchaSent) {
-        toast.add({ title: '验证码已发送，请稍等片刻再试。' });
+        toast.add({ title: t('captchaAlreadySent') });
         return;
     }
 
     // 发送验证码逻辑
-    toast.add({ title: '验证码已发送，请查收邮件。' });
+    toast.add({ title: t('captchaSent') });
     captchaStore.startCountdown(); // 开始倒计时
 };
 </script>
@@ -94,7 +93,7 @@ const sendCaptcha = () => {
                                     :class="captchaStore.isCaptchaSent ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary text-white hover:bg-primary/90 transition-colors'"
                                     class="px-4 py-2 rounded-md">
                                     {{ captchaStore.isCaptchaSent ? $t('captchaSent') + ' (' + captchaStore.countdown +
-                                    's)' : $t('sendCaptcha') }}
+                                        's)' : $t('sendCaptcha') }}
                                 </button>
                             </div>
                         </form>
