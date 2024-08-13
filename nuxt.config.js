@@ -8,8 +8,15 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxt/image",
     "@nuxtjs/i18n",
-    "@nuxt/ui"
+    "@nuxt/ui",
+    "@pinia/nuxt"
   ],
+  ui: {
+    notifications: {
+      // Show toasts at the top right of the screen
+      position: 'top-0 right-0'
+    }
+  },
   compatibilityDate: '2024-08-13',
   site: {
     url: SiteConfig.SiteURL,
@@ -20,6 +27,7 @@ export default defineNuxtConfig({
       useCookie: true,
       alwaysRedirect: false
     },
+    defaultLocale: 'zh-cn'
   },
   image: {
     format: ['avif', 'webp', 'jpeg', 'png'],

@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
     <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div class="flex items-center justify-center py-12">
@@ -28,7 +31,7 @@
                     <button
                         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">
-                        {{ $t('login') }}
+                        {{ $t('signIn') }}
                     </button>
                     <!-- <button
                         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
@@ -37,11 +40,11 @@
                 </div>
                 <div class="mt-4 text-center text-sm">
                     {{ $t('noAccount') }}{{ " " }}
-                    <a class="underline" href="#">
+                    <NuxtLink class="underline" to="/auth/signup">
                         {{ $t('signUp') }}
-                    </a>
+                    </NuxtLink>
                 </div>
-            </div>
+            </div>  
         </div>
         <div class="hidden bg-muted lg:block">
             <div class="flex h-full flex-col items-center justify-center gap-6 px-4 md:px-6">

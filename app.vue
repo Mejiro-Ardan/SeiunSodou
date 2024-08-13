@@ -5,4 +5,5 @@ import Navigation from '@/components/navigation/index.vue'
   <Navigation>
     <NuxtPage />
   </Navigation>
+  <UNotifications />
 </template>
