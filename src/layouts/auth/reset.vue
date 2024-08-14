@@ -1,30 +1,26 @@
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import sha256 from 'crypto-js/sha256';
-import { useCaptchaStore } from '@/stores/captchaStore';
 import { useI18n } from 'vue-i18n';
 import { Api_Endpoint } from '@/config';
 
 const { t } = useI18n();
-
-const captchaStore = useCaptchaStore();
 const toast = useToast();
 
 const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const newPassword = ref('');
+const confirmNewPassword = ref('');
 const captchaCode = ref(Array(6).fill('')); // 初始化为6个空字符串
 
 const emailTouched = ref(false);
-const passwordTouched = ref(false);
-const confirmPasswordTouched = ref(false);
-const isAgreementAccepted = ref(false); // 用户协议复选框状态
-const sendCaptchaStatus = ref(false)
+const newPasswordTouched = ref(false);
+const confirmNewPasswordTouched = ref(false);
+const sendCaptchaStatus = ref(false);
 
-const passwordsMatch = computed(() => password.value === confirmPassword.value);
+const passwordsMatch = computed(() => newPassword.value === confirmNewPassword.value);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
 const isPasswordValid = computed(() => {
-    const passwordValue = password.value;
+    const passwordValue = newPassword.value;
     const hasNumber = /\d/.test(passwordValue);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwordValue);
     const hasLetter = /[a-zA-Z]/.test(passwordValue);
@@ -34,13 +30,7 @@ const isPasswordValid = computed(() => {
 });
 const isCaptchaComplete = computed(() => captchaCode.value.every(code => code.length > 0));
 
-watch([email, password, confirmPassword], () => {
-    if (email.value) emailTouched.value = true;
-    if (password.value) passwordTouched.value = true;
-    if (confirmPassword.value) confirmPasswordTouched.value = true;
-});
-
-function focusNextInput(el, prevId, nextId) {
+const focusNextInput = (el, prevId, nextId) => {
     if (el.value.length === 0) {
         if (prevId) {
             document.getElementById(prevId).focus();
@@ -52,9 +42,59 @@ function focusNextInput(el, prevId, nextId) {
     }
 }
 
-onMounted(() => {
-    captchaStore.initializeCountdown();
+const sendCaptcha = async () => {
+    sendCaptchaStatus.value = true;
+    try {
+        const response = await fetch(Api_Endpoint + '/send_mail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email.value, type: 'reset' }),
+        });
+        const data = await response.json();
+        if (data.code !== 200) {
+            toast.add({ title: t(data.message), color: "red" });
+            sendCaptchaStatus.value = false;
+        } else {
+            toast.add({ title: t(data.message) });
+            sendCaptchaStatus.value = false;
+        }
+    } catch (error) {
+        toast.add({ title: error.toString(), color: "red" });
+        sendCaptchaStatus.value = false;
+    }
+};
 
+const handleSubmit = async () => {
+    const formData = {
+        email: email.value,
+        newPassword: sha256(newPassword.value).toString(),
+        code: captchaCode.value.join('')
+    };
+
+    try {
+        const response = await fetch(Api_Endpoint + '/reset_password', { // 假设 API 端点为 /reset_password
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (data.code !== 200) {
+            toast.add({ title: t(data.message), color: "red" });
+        } else {
+            toast.add({ title: t(data.message) });
+            toast.add({ title: t('redirecting_to_signin') });
+            await navigateTo('/auth/signin');
+        }
+    } catch (error) {
+        toast.add({ title: error.toString(), color: "red" });
+    }
+};
+
+onMounted(() => {
     document.querySelectorAll('[data-focus-input-init]').forEach(function (element) {
         element.addEventListener('keyup', function () {
             const prevId = this.getAttribute('data-focus-input-prev');
@@ -63,68 +103,6 @@ onMounted(() => {
         });
     });
 });
-
-const sendCaptcha = async () => {
-    sendCaptchaStatus.value = true
-    if (captchaStore.isCaptchaSent) {
-        toast.add({ title: t('captchaSent') });
-        return;
-    }
-    try {
-        const response = await fetch(Api_Endpoint + '/send_mail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email.value, type: 'signup' })
-        });
-        const data = await response.json();
-        if (data.code != 200) {
-            if (data.message == 'wait_before_resend') {
-                toast.add({ title: t(data.message).replace('[wait_time]', String(data.wait_time)), color: "red" })
-                sendCaptchaStatus.value = false
-            } else {
-                toast.add({ title: t(data.message), color: "red" })
-                sendCaptchaStatus.value = false
-            }
-        } else {
-            toast.add({ title: t(data.message) })
-            sendCaptchaStatus.value = false
-        }
-    } catch (error) {
-        toast.add({ title: error, color: "red" })
-        sendCaptchaStatus.value = false
-    }
-};
-
-const handleSubmit = async () => {
-    // 获取表单数据
-    const formData = {
-        email: email.value,
-        password: sha256(password.value).toString(), // 对密码进行SHA-256加密
-        code: captchaCode.value.join('') // 将验证码数组合并为字符串
-    };
-
-    try {
-        const response = await fetch(Api_Endpoint + '/register_verify', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-        const data = await response.json();
-        if (data.code != 200) {
-            toast.add({ title: t(data.message), color: "red" })
-        } else {
-            toast.add({ title: t(data.message) })
-            toast.add({ title: t('redirecting_to_login') })
-            await navigateTo('/auth/signin');
-        }
-    } catch (error) {
-        toast.add({ title: error, color: "red" })
-    }
-};
 </script>
 
 <template>
@@ -132,8 +110,8 @@ const handleSubmit = async () => {
         <div class="flex items-center justify-center py-12">
             <div class="mx-auto w-[350px] space-y-6">
                 <div class="space-y-2 text-center">
-                    <h1 class="text-3xl font-bold">{{ $t('createAccount') }}</h1>
-                    <p class="text-muted-foreground">{{ $t('joinDescription') }}</p>
+                    <h1 class="text-3xl font-bold">{{ $t('resetPassword') }}</h1>
+                    <p class="text-muted-foreground">{{ $t('resetDescription') }}</p>
                 </div>
                 <div class="space-y-4">
                     <!-- 邮箱输入 -->
@@ -148,27 +126,27 @@ const handleSubmit = async () => {
                             {{ $t('invalidEmail') }}
                         </p>
                     </div>
-                    <!-- 密码输入 -->
+                    <!-- 新密码输入 -->
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2"
-                            :class="{ 'border-red-500': passwordTouched && !isPasswordValid }">
+                            :class="{ 'border-red-500': newPasswordTouched && !isPasswordValid }">
                             <Icon name="material-symbols:password" />
-                            <input type="password" v-model="password" class="grow border-none focus:ring-0"
-                                :placeholder="$t('passwordPlaceholder')" />
+                            <input type="password" v-model="newPassword" class="grow border-none focus:ring-0"
+                                :placeholder="$t('newPasswordPlaceholder')" />
                         </label>
-                        <p v-if="passwordTouched && !isPasswordValid" class="text-red-500 text-sm">
+                        <p v-if="newPasswordTouched && !isPasswordValid" class="text-red-500 text-sm">
                             {{ $t('invalidPassword') }}
                         </p>
                     </div>
-                    <!-- 确认密码输入 -->
+                    <!-- 确认新密码输入 -->
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2"
-                            :class="{ 'border-red-500': confirmPasswordTouched && !passwordsMatch }">
+                            :class="{ 'border-red-500': confirmNewPasswordTouched && !passwordsMatch }">
                             <Icon name="material-symbols:password" />
-                            <input type="password" v-model="confirmPassword" class="grow border-none focus:ring-0"
-                                :placeholder="$t('confirmPasswordPlaceholder')" />
+                            <input type="password" v-model="confirmNewPassword" class="grow border-none focus:ring-0"
+                                :placeholder="$t('confirmNewPasswordPlaceholder')" />
                         </label>
-                        <p v-if="confirmPasswordTouched && !passwordsMatch" class="text-red-500 text-sm">
+                        <p v-if="confirmNewPasswordTouched && !passwordsMatch" class="text-red-500 text-sm">
                             {{ $t('passwordsDoNotMatch') }}
                         </p>
                     </div>
@@ -188,38 +166,26 @@ const handleSubmit = async () => {
                                 </div>
                             </div>
                             <div class="flex justify-center">
-                                <button @click.prevent="sendCaptcha" :disabled="captchaStore.isCaptchaSent"
+                                <button @click.prevent="sendCaptcha" :disabled="sendCaptchaStatus"
                                     class="relative px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors">
                                     <span v-if="sendCaptchaStatus"
                                         class="loading loading-spinner items-center justify-center"></span>
-                                    {{ captchaStore.isCaptchaSent ? $t('captchaSent') + ' (' +
-                                        captchaStore.countdown + 's)' : $t('sendCaptcha') }}
+                                    {{ sendCaptchaStatus ? $t('sendingCaptcha') : $t('sendCaptcha') }}
                                 </button>
                             </div>
                         </form>
                     </div>
-                    <!-- 用户协议复选框 -->
-                    <div class="flex items-center">
-                        <input id="link-checkbox" type="checkbox" v-model="isAgreementAccepted"
-                            class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                            $t('agreeToTerms') }}
-                            <NuxtLink class="underline" to="/terms">
-                                {{ $t('termsAndConditions') }}
-                            </NuxtLink>
-                        </label>
-                    </div>
                     <!-- 提交按钮 -->
                     <button @click.prevent="handleSubmit"
-                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !passwordTouched || !confirmPasswordTouched || !isCaptchaComplete || !isAgreementAccepted"
+                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !newPasswordTouched || !confirmNewPasswordTouched || !isCaptchaComplete"
                         class="inline-flex text-white items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">
-                        {{ $t('signUp') }}
+                        {{ $t('resetPassword') }}
                     </button>
                 </div>
-                <!-- 已有账号提示 -->
+                <!-- 提示返回登录 -->
                 <div class="mt-4 text-center text-sm">
-                    {{ $t('alreadyHaveAccount') }}{{ " " }}
+                    {{ $t('rememberPassword') }}{{ " " }}
                     <NuxtLink class="underline" to="/auth/signin">
                         {{ $t('signIn') }}
                     </NuxtLink>

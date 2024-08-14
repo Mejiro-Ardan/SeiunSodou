@@ -3,12 +3,12 @@ import { SiteConfig } from '@/config'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n';
 
-import SignIn from '@/layouts/auth/signin.vue'
+import Reset from '@/layouts/auth/reset.vue'
 
 const { t } = useI18n();
 
 const PageName = computed(() => {
-    return `${t('signIn')} - ${SiteConfig.title}`;
+    return `${t('resetPassword')} - ${SiteConfig.title}`;
 });
 
 useSeoMeta({
@@ -19,5 +19,5 @@ useSeoMeta({
 </script>
 
 <template>
-    <SignIn />
+    <Reset />
 </template>

@@ -3,7 +3,7 @@ import { SiteConfig } from '@/config'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n';
 
-import Register from '@/layouts/auth/signup.vue'
+import SignUp from '@/layouts/auth/signup.vue'
 
 const { t } = useI18n();
 
@@ -19,5 +19,5 @@ useSeoMeta({
 </script>
 
 <template>
-    <Register />
+    <SignUp />
 </template>

@@ -1,4 +1,3 @@
-// stores/captchaStore.js
 import { defineStore } from 'pinia';
 
 export const useCaptchaStore = defineStore('captcha', {

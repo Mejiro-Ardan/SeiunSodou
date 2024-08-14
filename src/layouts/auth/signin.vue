@@ -1,4 +1,47 @@
 <script setup>
+import { useI18n } from 'vue-i18n';
+import { Api_Endpoint } from '@/config';
+import sha256 from 'crypto-js/sha256';
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth'; // 导入 Pinia store
+
+const { t } = useI18n();
+const toast = useToast();
+const authStore = useAuthStore(); // 使用 Pinia store
+
+const email = ref('');
+const password = ref('');
+
+const handleLogin = async () => {
+    if (!email.value || !password.value) {
+        toast.add({ title: t('email_password_required'), color: "red" });
+        return;
+    }
+
+    try {
+        const response = await fetch(`${Api_Endpoint}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email.value,
+                password: sha256(password.value).toString(),
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.code !== 200) {
+            toast.add({ title: t(data.message), color: "red" });
+        } else {
+            toast.add({ title: t(data.message) });
+            authStore.setToken(data.token);
+        }
+    } catch (error) {
+        toast.add({ title: error.toString(), color: "red" });
+    }
+};
 </script>
 
 <template>
@@ -13,30 +56,26 @@
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:mail-outline" />
-                            <input type="text" class="grow border-none focus:ring-0"
+                            <input type="text" class="grow border-none focus:ring-0" v-model="email"
                                 :placeholder="$t('emailPlaceholder')" />
                         </label>
                     </div>
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:password" />
-                            <input type="password" class="grow border-none focus:ring-0" value="password"
+                            <input type="password" class="grow border-none focus:ring-0" v-model="password"
                                 :placeholder="$t('passwordPlaceholder')" />
                         </label>
-                        <a class="ml-auto inline-block text-sm underline" href="#">
+                        <NuxtLink class="ml-auto inline-block text-sm underline" to="/auth/reset">
                             {{ $t('forgotPassword') }}
-                        </a>
+                        </NuxtLink>
                     </div>
 
                     <button
-                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                        type="submit">
+                        class="inline-flex text-white items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+                        type="button" @click="handleLogin">
                         {{ $t('signIn') }}
                     </button>
-                    <!-- <button
-                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-                        Login with Google
-                    </button> -->
                 </div>
                 <div class="mt-4 text-center text-sm">
                     {{ $t('noAccount') }}{{ " " }}
@@ -44,7 +83,7 @@
                         {{ $t('signUp') }}
                     </NuxtLink>
                 </div>
-            </div>  
+            </div>
         </div>
         <div class="hidden bg-muted lg:block">
             <div class="flex h-full flex-col items-center justify-center gap-6 px-4 md:px-6">

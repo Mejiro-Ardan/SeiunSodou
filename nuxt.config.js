@@ -21,12 +21,19 @@ export default defineNuxtConfig({
     url: SiteConfig.SiteURL,
   },
   i18n: {
+    locales: [
+      { code: 'en', name: 'English' },
+      { code: 'zh', name: '中文' },
+      { code: 'ja', name: '日本語' }
+    ],
+    defaultLocale: 'zh',
     vueI18n: './i18n.config.js',
+    strategy: 'no_prefix', // 不使用语言前缀
     detectBrowserLanguage: {
       useCookie: true,
-      alwaysRedirect: false
-    },
-    defaultLocale: 'zh-cn'
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root' // 或 'always'
+    }
   },
   image: {
     format: ['avif', 'webp', 'jpeg', 'png'],
@@ -38,7 +45,6 @@ export default defineNuxtConfig({
       },
     },
   },
-
   sitemap: {
     xslTips: false,
     xslColumns: [
