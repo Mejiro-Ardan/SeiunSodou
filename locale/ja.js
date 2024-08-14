@@ -42,5 +42,6 @@ export default {
     'newPasswordPlaceholder': '新しいパスワードを入力してください',
     'confirmNewPasswordPlaceholder': '新しいパスワードを確認してください',
     'rememberPassword': 'パスワードを覚えていますか？',
-    'password_reset_success': 'パスワードのリセットに成功しました'
+    'password_reset_success': 'パスワードのリセットに成功しました',
+    'invalid_parameters': '無効なパラメータ'
 }

@@ -42,5 +42,6 @@ export default {
     'newPasswordPlaceholder': '输入新密码',
     'confirmNewPasswordPlaceholder': '确认新密码',
     'rememberPassword': '记得您的密码？',
-    'password_reset_success': '密码重置成功'
+    'password_reset_success': '密码重置成功',
+    'invalid_parameters': "无效的请求参数"
 }

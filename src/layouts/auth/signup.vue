@@ -4,8 +4,12 @@ import sha256 from 'crypto-js/sha256';
 import { useCaptchaStore } from '@/stores/captchaStore';
 import { useI18n } from 'vue-i18n';
 import { Api_Endpoint } from '@/config';
+import { useAuthStore } from '@/stores/verifyAuth';
+
+import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
+const authStore = useAuthStore();
 
 const captchaStore = useCaptchaStore();
 const toast = useToast();
@@ -13,13 +17,13 @@ const toast = useToast();
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
-const captchaCode = ref(Array(6).fill('')); // 初始化为6个空字符串
-
+const captchaCode = ref(Array(6).fill(''));
 const emailTouched = ref(false);
 const passwordTouched = ref(false);
 const confirmPasswordTouched = ref(false);
-const isAgreementAccepted = ref(false); // 用户协议复选框状态
-const sendCaptchaStatus = ref(false)
+const isAgreementAccepted = ref(false);
+const sendCaptchaStatus = ref(false);
+const isLoading = ref(true);
 
 const passwordsMatch = computed(() => password.value === confirmPassword.value);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
@@ -40,6 +44,11 @@ watch([email, password, confirmPassword], () => {
     if (confirmPassword.value) confirmPasswordTouched.value = true;
 });
 
+watch(() => authStore.sessionStatus, async (newStatus) => {
+    if (newStatus && newStatus.code === '200') {
+        await navigateTo('/auth/success');
+    }
+});
 function focusNextInput(el, prevId, nextId) {
     if (el.value.length === 0) {
         if (prevId) {
@@ -52,7 +61,13 @@ function focusNextInput(el, prevId, nextId) {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
+    await authStore.initializeToken();
+    if (authStore.sessionStatus && authStore.sessionStatus.code === '200') {
+        await navigateTo('/auth/success');
+    }
+    isLoading.value = false;
+
     captchaStore.initializeCountdown();
 
     document.querySelectorAll('[data-focus-input-init]').forEach(function (element) {
@@ -130,7 +145,8 @@ const handleSubmit = async () => {
 <template>
     <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div class="flex items-center justify-center py-12">
-            <div class="mx-auto w-[350px] space-y-6">
+            <Loading v-if="isLoading" />
+            <div class="mx-auto w-[350px] space-y-6" v-show="!isLoading">
                 <div class="space-y-2 text-center">
                     <h1 class="text-3xl font-bold">{{ $t('createAccount') }}</h1>
                     <p class="text-muted-foreground">{{ $t('joinDescription') }}</p>

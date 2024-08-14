@@ -28,11 +28,11 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'zh',
     vueI18n: './i18n.config.js',
-    strategy: 'no_prefix', // 不使用语言前缀
+    strategy: 'no_prefix',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root' // 或 'always'
+      redirectOn: 'root'
     }
   },
   image: {

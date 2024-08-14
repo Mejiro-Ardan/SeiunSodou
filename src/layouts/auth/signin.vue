@@ -1,9 +1,11 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Api_Endpoint } from '@/config';
 import sha256 from 'crypto-js/sha256';
-import { ref } from 'vue';
-import { useAuthStore } from '@/stores/auth'; // 导入 Pinia store
+import { useAuthStore } from '@/stores/verifyAuth';
+
+import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
 const toast = useToast();
@@ -11,6 +13,7 @@ const authStore = useAuthStore(); // 使用 Pinia store
 
 const email = ref('');
 const password = ref('');
+const isLoading = ref(true);
 
 const handleLogin = async () => {
     if (!email.value || !password.value) {
@@ -32,7 +35,7 @@ const handleLogin = async () => {
 
         const data = await response.json();
 
-        if (data.code !== 200) {
+        if (data.code != 200) {
             toast.add({ title: t(data.message), color: "red" });
         } else {
             toast.add({ title: t(data.message) });
@@ -42,12 +45,28 @@ const handleLogin = async () => {
         toast.add({ title: error.toString(), color: "red" });
     }
 };
+
+onMounted(async () => {
+    await authStore.initializeToken();
+    if (authStore.sessionStatus && authStore.sessionStatus.code === '200') {
+        await navigateTo('/auth/success');
+    }
+    isLoading.value = false;
+});
+
+watch(() => authStore.sessionStatus, async (newStatus) => {
+    if (newStatus && newStatus.code === '200') {
+        await navigateTo('/auth/success');
+    }
+});
+
 </script>
 
 <template>
     <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div class="flex items-center justify-center py-12">
-            <div class="mx-auto w-[350px] space-y-6">
+            <Loading v-if="isLoading" />
+            <div class="mx-auto w-[350px] space-y-6" v-show="!isLoading">
                 <div class="space-y-2 text-center">
                     <h1 class="text-3xl font-bold">{{ $t('welcome') }}</h1>
                     <p class="text-muted-foreground">{{ $t('enterCredentials') }}</p>

@@ -42,5 +42,6 @@ export default {
     'newPasswordPlaceholder': 'Enter new password',
     'confirmNewPasswordPlaceholder': 'Confirm new password',
     'rememberPassword': 'Remember your password?',
-    'password_reset_success': 'Password reset successful'
+    'password_reset_success': 'Password reset successful',
+    'invalid_parameters': 'Invalid parameters'
 }
