@@ -1,17 +1,17 @@
-from pymongo import MongoClient
-import logging
 import os
+import logging
+from pymongo import MongoClient
 
-
-MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_HOST = os.getenv('MONGO_HOST', '127.0.0.1')
 MONGO_PORT = int(os.getenv('MONGO_PORT', 27017))
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+MONGO_USER = os.getenv('MONGO_USER')
 
-logging.info('链接数据库')
+logging.info(f'连接数据库: {MONGO_HOST}:{MONGO_PORT}')
 
-if MONGO_PASSWORD:
+if MONGO_USER and MONGO_PASSWORD:
     client = MongoClient(
-        f'mongodb://{MONGO_HOST}:{MONGO_PORT}', password=MONGO_PASSWORD)
+        f'mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}')
 else:
     client = MongoClient(MONGO_HOST, MONGO_PORT)
 

@@ -13,6 +13,7 @@ services:
       - MONGO_PORT = "" # MongoDB端口
       - MONGO_HOST = "" # MongoDB主机
       - MONGO_PASSWORD = "" # MongoDB密码
+      - MONGO_USER = "" # MongoDB用户
     volumes:
       - ./data/backend:/data/backend
     ports:
