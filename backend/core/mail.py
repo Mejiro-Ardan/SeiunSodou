@@ -7,7 +7,7 @@ def send_code(receiver_email, verification_code, request_type):
     smtp_server = os.getenv('SMTP_SERVER')
     smtp_port = os.getenv('SMTP_PORT')
     sender_email = os.getenv('SMTP_SENDER')
-    sender_password = os.getenv('SMTP_PASSWARD')
+    sender_password = os.getenv('SMTP_PASSWORD')
 
     # 根据 request_type 设置邮件内容
     if request_type == 'signup':
