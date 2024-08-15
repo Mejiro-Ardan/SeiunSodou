@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  backend:
+    image: ghcr.io/mejiro-ardan/seiunsodou/backend:latest
+    container_name: backend
+    environment:
+      - TZ=Asia/Shanghai
+      # Backend
+      - JWT_SECRET =  "" # JWT密钥 必填
+      - SMTP_SERVER = "" # SMTP服务，默认启用starttls
+      - SMTP_PORT = ""
+      - SMTP_SENDER = ""
+      - SMTP_PASSWARD = ""
+    volumes:
+      - ./data/backend:/data/backend
+    depends_on:
+      - mongo
+    networks:
+      - seiunsodou-network
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/mejiro-ardan/seiunsodou/frontend:latest
+    container_name: frontend
+    environment:
+      # Frontend
+      API_ENDPOINT: "http://example.com/api" # 后端api地址
+    networks:
+      - seiunsodou-network
+    restart: unless-stopped
+
+  mongo:
+    container_name: mongo
+    image: mongo:6.0.16
+    volumes:
+      - ./data/db:/data/db
+    networks:
+      - seiunsodou-network
+    restart: unless-stopped
+networks:
+  seiunsodou-network:
+    driver: bridge
