@@ -1,6 +1,8 @@
 # main.py
 import uvicorn
 from fastapi import FastAPI, Request, Header
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from core.db import init_db, check_db
 from core.handlers import handle_login, handle_send_mail, handle_register_verify, handle_verify, handle_reset_password
@@ -13,8 +15,10 @@ load_dotenv(dotenv_path=f'{os.path.dirname(
 
 app = FastAPI()
 
+
 def get_jwt_token(authorization: str):
     return authorization.split(" ")[1]
+
 
 # CORS配置
 app.add_middleware(
@@ -26,9 +30,26 @@ app.add_middleware(
 )
 
 
-@app.options("/api/{rest_of_path:path}")
+@app.options("/{rest_of_path:path}")
 async def preflight_handler():
     return {"message": "Preflight request successful"}
+
+
+@app.exception_handler(StarletteHTTPException)
+async def error_handler(request: Request, exc: StarletteHTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "code": str(exc.status_code),
+            "message": exc.detail,
+            "status": "failed"
+        }
+    )
+
+
+@app.get("/")
+async def home():
+    return {"code": "403", "message": "This is the SeiunSodou API, built with FastAPI based on Python. Unauthorized access to this site is prohibited.", "status": "failed"}
 
 
 @app.post("/api/login")
