@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from random import randint
 import jwt
-from core.db import find_user, db_insert, find_register, db_update, db_delete, db_read
+from core.db import db_insert, db_find, db_update, db_delete, db_read
 from core.mail import send_code
 
 # 定义消息字典，用于存储各种操作的返回消息
@@ -36,7 +36,7 @@ def get_current_time():
 async def handle_login(data):
     email = data.get("email")
     password = data.get("password")
-    user = find_user("SeiunSodou", "users", {"email": email})
+    user = db_find("SeiunSodou", "users", {"email": email})
 
     # 如果用户不存在，返回错误消息
     if not user:
@@ -74,8 +74,8 @@ async def handle_send_mail(data):
     if not email or not request_type or request_type not in ["signup", "reset"]:
         return {"code": "400", "message": "invalid_parameters", "status": "failed"}
 
-    user_exists = find_user("SeiunSodou", "users", {"email": email})
-    register_entry = find_register("SeiunSodou", "register", {"email": email})
+    user_exists = db_find("SeiunSodou", "users", {"email": email})
+    register_entry = db_find("SeiunSodou", "register", {"email": email})
     current_time = get_current_time()
 
     # 处理注册请求
@@ -152,7 +152,7 @@ async def handle_register_verify(data):
     code = data.get("code")
     password = data.get("password")
 
-    register_entry = find_register(
+    register_entry = db_find(
         "SeiunSodou", "register", {"email": email, "code": int(code)}
     )
 
@@ -202,7 +202,7 @@ async def handle_reset_password(data):
     code = data.get("code")
     new_password = data.get("newPassword")
 
-    register_entry = find_register(
+    register_entry = db_find(
         "SeiunSodou", "register", {"email": email, "code": int(code)}
     )
 
