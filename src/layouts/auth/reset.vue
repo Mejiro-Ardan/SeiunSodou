@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import sha256 from 'crypto-js/sha256';
-import { useI18n } from 'vue-i18n';
-import { Api_Endpoint } from '@/config';
+
+const appConfig = useAppConfig();
+
+const Api_Endpoint = appConfig.Api_Endpoint;
 
 const { t } = useI18n();
 const toast = useToast();
@@ -196,7 +198,7 @@ onMounted(() => {
         <div class="hidden bg-muted lg:block">
             <div class="flex h-full flex-col items-center justify-center gap-6 px-4 md:px-6">
                 <div class="grid gap-4 text-center">
-                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('trustedBy') }}</h2>
+                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('Sitename') }}</h2>
                     <p
                         class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                         {{ $t('description') }}

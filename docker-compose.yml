@@ -12,6 +12,8 @@ services:
       - SMTP_PASSWARD = ""
     volumes:
       - ./data/backend:/data/backend
+    ports:
+      - "5000:5000"
     depends_on:
       - mongo
     networks:
@@ -21,6 +23,8 @@ services:
   frontend:
     image: ghcr.io/mejiro-ardan/seiunsodou/frontend:latest
     container_name: frontend
+    ports:
+      - "3000:3000"
     environment:
       # Frontend
       API_ENDPOINT: "http://example.com/api" # 后端api地址

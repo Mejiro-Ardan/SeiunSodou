@@ -1,5 +1,7 @@
 <script setup>
-import { NavigationTopConfig } from '@/config';
+const appConfig = useAppConfig();
+
+const NavigationTopConfig = appConfig.NavigationTopConfig;
 
 const items = [
     [{

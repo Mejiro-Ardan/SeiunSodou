@@ -1,15 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { Api_Endpoint } from '@/config';
 import sha256 from 'crypto-js/sha256';
 import { useAuthStore } from '@/stores/verifyAuth';
 
 import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
+const appConfig = useAppConfig();
+const Api_Endpoint = appConfig.Api_Endpoint;
 const toast = useToast();
-const authStore = useAuthStore(); // 使用 Pinia store
+const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
@@ -49,13 +49,13 @@ const handleLogin = async () => {
 
 onMounted(async () => {
     await authStore.initializeToken();
-    if (authStore.sessionStatus && authStore.sessionStatus.code === '200') {
+    if (authStore.Status && authStore.Status.code === '200') {
         await navigateTo('/auth/success');
     }
     isLoading.value = false;
 });
 
-watch(() => authStore.sessionStatus, async (newStatus) => {
+watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
         await navigateTo('/auth/success');
     }
@@ -108,7 +108,7 @@ watch(() => authStore.sessionStatus, async (newStatus) => {
         <div class="hidden bg-muted lg:block">
             <div class="flex h-full flex-col items-center justify-center gap-6 px-4 md:px-6">
                 <div class="grid gap-4 text-center">
-                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('trustedBy') }}</h2>
+                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('Sitename') }}</h2>
                     <p
                         class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                         {{ $t('description') }}

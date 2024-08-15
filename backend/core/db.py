@@ -23,7 +23,6 @@ def init_db(db_name):
     db.create_collection('users')
     db.create_collection('articles')
     db.create_collection('register')
-    db.create_collection('session')
     # 检测是否创建成功
     collist = db.list_collection_names()
     if "users" in collist and "articles" in collist:

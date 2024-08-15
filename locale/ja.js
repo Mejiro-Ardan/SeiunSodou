@@ -9,7 +9,7 @@ export default {
     'forgotPassword': 'パスワードをお忘れですか？',
     'noAccount': 'アカウントをお持ちではないですか？',
     'signUp': 'サインアップ',
-    'trustedBy': '星雲草堂SeiunSodou',
+    'Sitename': '星雲草堂SeiunSodou',
     'description': '私たちの物語を再描画する',
     'createAccount': '新しいアカウントを作成',
     'confirmPasswordPlaceholder': 'もう一度パスワードを入力してください',

@@ -1,3 +1,3 @@
 export default defineEventHandler(() => {
-    return { 'ping': 'pong' };
+    return { 'code': '200', 'ping': 'pong' };
 });

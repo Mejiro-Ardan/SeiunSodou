@@ -9,7 +9,7 @@ export default {
     'forgotPassword': '忘记密码？',
     'noAccount': '还没有账号？',
     'signUp': '注册',
-    'trustedBy': '星云草堂SeiunSodou',
+    'Sitename': '星云草堂SeiunSodou',
     'description': '重绘属于我们的故事',
     'createAccount': '创建一个新账户',
     'confirmPasswordPlaceholder': '请再次输入您的密码',

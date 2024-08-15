@@ -2,14 +2,14 @@
 import { onMounted, ref, computed, watch } from 'vue';
 import sha256 from 'crypto-js/sha256';
 import { useCaptchaStore } from '@/stores/captchaStore';
-import { useI18n } from 'vue-i18n';
-import { Api_Endpoint } from '@/config';
 import { useAuthStore } from '@/stores/verifyAuth';
 
 import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
+const appConfig = useAppConfig();
+const Api_Endpoint = appConfig.Api_Endpoint;
 
 const captchaStore = useCaptchaStore();
 const toast = useToast();
@@ -44,7 +44,7 @@ watch([email, password, confirmPassword], () => {
     if (confirmPassword.value) confirmPasswordTouched.value = true;
 });
 
-watch(() => authStore.sessionStatus, async (newStatus) => {
+watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
         await navigateTo('/auth/success');
     }
@@ -61,9 +61,11 @@ function focusNextInput(el, prevId, nextId) {
     }
 }
 
+console.log(Api_Endpoint)
+
 onMounted(async () => {
     await authStore.initializeToken();
-    if (authStore.sessionStatus && authStore.sessionStatus.code === '200') {
+    if (authStore.Status && authStore.Status.code === '200') {
         await navigateTo('/auth/success');
     }
     isLoading.value = false;
@@ -246,7 +248,7 @@ const handleSubmit = async () => {
         <div class="hidden bg-muted lg:block">
             <div class="flex h-full flex-col items-center justify-center gap-6 px-4 md:px-6">
                 <div class="grid gap-4 text-center">
-                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('trustedBy') }}</h2>
+                    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl">{{ $t('Sitename') }}</h2>
                     <p
                         class="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                         {{ $t('description') }}

@@ -9,7 +9,7 @@ export default {
     'forgotPassword': 'Forgot password?',
     'noAccount': 'Don\'t have an account?',
     'signUp': 'Sign Up',
-    'trustedBy': 'SeiunSodou',
+    'Sitename': 'SeiunSodou',
     'description': 'Redrawing our story',
     'createAccount': 'Create a new account',
     'confirmPasswordPlaceholder': 'Please confirm your password',

@@ -1,20 +1,17 @@
 <script setup>
-import { SiteConfig } from '@/config'
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n';
-
 import Reset from '@/layouts/auth/reset.vue'
 
 const { t } = useI18n();
 
 const PageName = computed(() => {
-    return `${t('resetPassword')} - ${SiteConfig.title}`;
+    return `${t('resetPassword')} - ${t('Sitename')}`;
 });
 
 useSeoMeta({
     title: PageName.value,
-    ogTitle: SiteConfig.title,
-    description: SiteConfig.description,
+    ogTitle: t('Sitename'),
+    description: t('description'),
 })
 </script>
 
