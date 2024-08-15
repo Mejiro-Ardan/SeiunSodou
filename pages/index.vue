@@ -11,7 +11,7 @@ const currentPath = route.path;
 const { t } = useI18n();
 
 const PageName = computed(() => {
-    const entry = appConfig['NavigationTopConfig']['sections'].sections.find((entry) => entry.path === currentPath);
+    const entry = appConfig['NavigationTopConfig']['sections'].find((entry) => entry.path === currentPath);
     return entry ? `${t(entry.name)} - ${t('Sitename')}` : t('Sitename');
 });
 

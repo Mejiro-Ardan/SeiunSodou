@@ -24,6 +24,7 @@ const confirmPasswordTouched = ref(false);
 const isAgreementAccepted = ref(false);
 const sendCaptchaStatus = ref(false);
 const isLoading = ref(true);
+const isSubmitting = ref(false);
 
 const passwordsMatch = computed(() => password.value === confirmPassword.value);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
@@ -122,6 +123,8 @@ const handleSubmit = async () => {
         code: captchaCode.value.join('') // 将验证码数组合并为字符串
     };
 
+    isSubmitting.value = true;
+
     try {
         const response = await fetch(Api_Endpoint + '/register_verify', {
             method: 'POST',
@@ -140,6 +143,8 @@ const handleSubmit = async () => {
         }
     } catch (error) {
         toast.add({ title: error, color: "red" })
+    } finally {
+        isSubmitting.value = false;
     }
 };
 </script>
@@ -229,10 +234,11 @@ const handleSubmit = async () => {
                     </div>
                     <!-- 提交按钮 -->
                     <button @click.prevent="handleSubmit"
-                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !passwordTouched || !confirmPasswordTouched || !isCaptchaComplete || !isAgreementAccepted"
+                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !passwordTouched || !confirmPasswordTouched || !isCaptchaComplete || !isAgreementAccepted || isSubmitting"
                         class="inline-flex text-white items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">
-                        {{ $t('signUp') }}
+                        <span v-if="isSubmitting" class="loading loading-spinner items-center justify-center"></span>
+                        <p v-if="!isSubmitting">{{ $t('signUp') }}</p>
                     </button>
                 </div>
                 <!-- 已有账号提示 -->

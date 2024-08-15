@@ -18,6 +18,7 @@ const emailTouched = ref(false);
 const newPasswordTouched = ref(false);
 const confirmNewPasswordTouched = ref(false);
 const sendCaptchaStatus = ref(false);
+const isSubmitting = ref(false);
 
 const passwordsMatch = computed(() => newPassword.value === confirmNewPassword.value);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
@@ -75,6 +76,8 @@ const handleSubmit = async () => {
         code: captchaCode.value.join('')
     };
 
+    isSubmitting.value = true;
+
     try {
         const response = await fetch(Api_Endpoint + '/reset_password', { // 假设 API 端点为 /reset_password
             method: 'POST',
@@ -93,6 +96,8 @@ const handleSubmit = async () => {
         }
     } catch (error) {
         toast.add({ title: error.toString(), color: "red" });
+    } finally {
+        isSubmitting.value = false;
     }
 };
 
@@ -179,10 +184,11 @@ onMounted(() => {
                     </div>
                     <!-- 提交按钮 -->
                     <button @click.prevent="handleSubmit"
-                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !newPasswordTouched || !confirmNewPasswordTouched || !isCaptchaComplete"
+                        :disabled="!isEmailValid || !isPasswordValid || !passwordsMatch || !emailTouched || !newPasswordTouched || !confirmNewPasswordTouched || !isCaptchaComplete || isSubmitting"
                         class="inline-flex text-white items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">
-                        {{ $t('resetPassword') }}
+                        <span v-if="isSubmitting" class="loading loading-spinner items-center justify-center"></span>
+                        <p v-if="!isSubmitting">{{ $t('resetPassword') }}</p>
                     </button>
                 </div>
                 <!-- 提示返回登录 -->

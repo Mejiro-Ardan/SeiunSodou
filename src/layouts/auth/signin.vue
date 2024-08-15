@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import sha256 from 'crypto-js/sha256';
 import { useAuthStore } from '@/stores/verifyAuth';
 
@@ -14,12 +14,15 @@ const authStore = useAuthStore();
 const email = ref('');
 const password = ref('');
 const isLoading = ref(true);
+const isSubmitting = ref(false);
 
 const handleLogin = async () => {
     if (!email.value || !password.value) {
         toast.add({ title: t('email_password_required'), color: "red" });
         return;
     }
+
+    isSubmitting.value = true;
 
     try {
         const response = await fetch(`${Api_Endpoint}/login`, {
@@ -39,10 +42,12 @@ const handleLogin = async () => {
             toast.add({ title: t(data.message), color: "red" });
         } else {
             toast.add({ title: t(data.message) });
-            authStore.setToken(data.token);  // 保存JWT
+            authStore.setToken(data.token);
         }
     } catch (error) {
         toast.add({ title: error.toString(), color: "red" });
+    } finally {
+        isSubmitting.value = false;
     }
 };
 
@@ -90,11 +95,11 @@ watch(() => authStore.Status, async (newStatus) => {
                             {{ $t('forgotPassword') }}
                         </NuxtLink>
                     </div>
-
                     <button
                         class="inline-flex text-white items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="button" @click="handleLogin">
-                        {{ $t('signIn') }}
+                        <span v-if="isSubmitting" class="loading loading-spinner items-center justify-center"></span>
+                        <p v-if="!isSubmitting">{{ $t('signIn') }}</p>
                     </button>
                 </div>
                 <div class="mt-4 text-center text-sm">

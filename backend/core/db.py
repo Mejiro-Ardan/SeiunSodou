@@ -1,9 +1,19 @@
 from pymongo import MongoClient
 import logging
+import os
 
-# 链接本地数据库
+
+MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_PORT = int(os.getenv('MONGO_PORT', 27017))
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+
 logging.info('链接数据库')
-client = MongoClient('localhost', 27017)
+
+if MONGO_PASSWORD:
+    client = MongoClient(
+        f'mongodb://{MONGO_HOST}:{MONGO_PORT}', password=MONGO_PASSWORD)
+else:
+    client = MongoClient(MONGO_HOST, MONGO_PORT)
 
 
 # 检测是否存在数据库
