@@ -39,12 +39,13 @@ const handleLogin = async () => {
             toast.add({ title: t(data.message), color: "red" });
         } else {
             toast.add({ title: t(data.message) });
-            authStore.setToken(data.token);
+            authStore.setToken(data.token);  // 保存JWT
         }
     } catch (error) {
         toast.add({ title: error.toString(), color: "red" });
     }
 };
+
 
 onMounted(async () => {
     await authStore.initializeToken();

@@ -19,4 +19,4 @@ export const NavigationTopConfig = {
     }
 };
 
-export const Api_Endpoint = 'http://localhost:5000/api';
+export const Api_Endpoint = process.env.API_ENDPOINT;

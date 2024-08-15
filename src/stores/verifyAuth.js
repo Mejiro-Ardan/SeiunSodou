@@ -23,18 +23,15 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.removeItem('token');
                 return this.sessionStatus;
             }
-
             try {
                 const response = await fetch(`${Api_Endpoint}/verify`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ token: this.token })
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                    }
                 });
-
                 const data = await response.json();
-
                 if (data.code === "200") {
                     this.sessionStatus = { code: "200", message: "login_success", uid: data.uid, tokenCreated: data.tokenCreated, token: this.token, status: "success" };
                 } else if (data.code === "403") {
@@ -44,7 +41,6 @@ export const useAuthStore = defineStore('auth', {
             } catch (error) {
                 this.sessionStatus = { code: "500", message: "server_error", status: "failed" };
             }
-
             return this.sessionStatus;
         },
         async initializeToken() {
