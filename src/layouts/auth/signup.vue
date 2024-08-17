@@ -47,7 +47,7 @@ watch([email, password, confirmPassword], () => {
 
 watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
-        await navigateTo('/auth/success');
+        await navigateTo('/auth/');
     }
 });
 function focusNextInput(el, prevId, nextId) {
@@ -67,7 +67,7 @@ console.log(Api_Endpoint)
 onMounted(async () => {
     await authStore.initializeToken();
     if (authStore.Status && authStore.Status.code === '200') {
-        await navigateTo('/auth/success');
+        await navigateTo('/auth/');
     }
     isLoading.value = false;
 

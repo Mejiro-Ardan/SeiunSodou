@@ -22,7 +22,7 @@ MESSAGES = {
     "invalid_parameters": "无效的请求参数",
 }
 
-JWT_SECRET = os.getenv('JWT_SECRET')
+JWT_SECRET = os.getenv("JWT_SECRET")
 JWT_EXPIRATION_DELTA = timedelta(days=2)  # 令牌有效期为2天
 
 # 获取当前时间
@@ -208,17 +208,8 @@ async def handle_reset_password(data):
 
     # 如果验证码匹配且类型为重置密码，更新用户密码并删除注册表中的记录
     if register_entry and register_entry["type"] == "reset":
-        db_update(
-            "SeiunSodou",
-            "users",
-            {"email": email},
-            {"password": new_password}
-        )
-        db_delete(
-            "SeiunSodou",
-            "register",
-            {"email": email}
-        )
+        db_update("SeiunSodou", "users", {"email": email}, {"password": new_password})
+        db_delete("SeiunSodou", "register", {"email": email})
         return {"code": "200", "message": "password_reset_success", "status": "success"}
 
     return {"code": "403", "message": "verification_code_error", "status": "failed"}

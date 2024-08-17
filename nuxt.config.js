@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxt/ui",
-    "@pinia/nuxt"
+    "@pinia/nuxt",
+    "nuxtjs-naive-ui"
   ],
   runtimeConfig: {
     public: {

@@ -1,6 +1,6 @@
-import zh from '~/locale/zh'
-import en from '~/locale/en'
-import ja from '~/locale/ja'
+import zh from '~/locales/zh.json'
+import en from '~/locales/en.json'
+import ja from '~/locales/ja.json'
 
 export default defineI18nConfig(() => {
     return {

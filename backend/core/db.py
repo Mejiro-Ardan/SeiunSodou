@@ -5,21 +5,27 @@ from pymongo import MongoClient
 
 def mongo_client():
     # 从环境变量中获取数据库连接参数
-    MONGO_HOST = os.getenv('MONGO_HOST', '127.0.0.1')
-    MONGO_PORT = int(os.getenv('MONGO_PORT', 27017))
-    MONGO_USER = os.getenv('MONGO_USER')
-    MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+    MONGO_HOST = os.getenv("MONGO_HOST", "127.0.0.1")
+    MONGO_PORT = os.getenv("MONGO_PORT", "27017")
+    MONGO_USER = os.getenv("MONGO_USER")
+    MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
+
+    # 检查 MONGO_PORT 是否为有效的整数
+    if not MONGO_PORT.isdigit():
+        MONGO_PORT = 27017
+    else:
+        MONGO_PORT = int(MONGO_PORT)
 
     # 打印连接信息
-    logging.info(f'连接数据库: {MONGO_HOST}:{MONGO_PORT}')
+    logging.info(f"连接数据库: {MONGO_HOST}:{MONGO_PORT}")
 
     # 根据是否有用户名和密码来创建MongoClient
     if MONGO_USER and MONGO_PASSWORD:
         client = MongoClient(
-            f'mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}')
+            f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}"
+        )
     else:
-        client = MongoClient(MONGO_HOST, MONGO_PORT)
-
+        client = MongoClient(f"mongodb://{MONGO_HOST}:{MONGO_PORT}")
     return client
 
 
@@ -37,9 +43,10 @@ def init_db(db_name):
     logging.info('初始化数据库')
     db = client[db_name]
     # 创建用户集合以及文章集合
-    db.create_collection('users')
-    db.create_collection('articles')
-    db.create_collection('register')
+    db.create_collection("users")
+    db.create_collection("user_data")
+    db.create_collection("articles")
+    db.create_collection("register")
     # 检测是否创建成功
     collist = db.list_collection_names()
     client.close()

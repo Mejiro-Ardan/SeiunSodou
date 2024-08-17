@@ -55,14 +55,14 @@ const handleLogin = async () => {
 onMounted(async () => {
     await authStore.initializeToken();
     if (authStore.Status && authStore.Status.code === '200') {
-        await navigateTo('/auth/success');
+        await navigateTo('/auth/');
     }
     isLoading.value = false;
 });
 
 watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
-        await navigateTo('/auth/success');
+        await navigateTo('/auth/');
     }
 });
 
