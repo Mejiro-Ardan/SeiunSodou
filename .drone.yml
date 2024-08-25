@@ -7,7 +7,7 @@ steps:
     image: python:3.12
     commands:
       - cd backend
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
       - python main.py
 
 trigger:
