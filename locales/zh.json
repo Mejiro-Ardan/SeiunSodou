@@ -45,5 +45,6 @@
   "password_reset_success": "密码重置成功",
   "invalid_parameters": "无效的请求参数",
   "sendingCaptcha": "正在发送验证码",
-  "redirecting_to_signin": "准备重定向到登录页面"
+  "redirecting_to_signin": "准备重定向到登录页面",
+  "signout_failed": "退出登录失败"
 }

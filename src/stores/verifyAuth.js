@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
         async verify() {
             const runtimeConfig = useRuntimeConfig();
             const Api_Endpoint = runtimeConfig.public.Api_Endpoint;
-            
+
             if (!this.token) {
                 this.Status = { code: "403", message: "token_invalid", status: "failed" };
                 localStorage.removeItem('token');
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
                 });
                 const data = await response.json();
                 if (data.code === "200") {
-                    this.Status = { code: "200", message: "login_success", uid: data.uid, tokenCreated: data.tokenCreated, token: this.token, status: "success" };
+                    this.Status = { code: "200", message: "login_success", uid: data.uid, tokenCreated: data.tokenCreated, status: "success" };
                 } else if (data.code === "403") {
                     this.Status = { code: "403", message: "token_expired", status: "failed" };
                     localStorage.removeItem('token');

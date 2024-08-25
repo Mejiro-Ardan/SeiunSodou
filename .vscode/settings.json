@@ -5,4 +5,11 @@
         "vue-sfc"
     ],
     "i18n-ally.keystyle": "nested",
+    "i18n-ally.sourceLanguage": "zh",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar"
+    },
 }

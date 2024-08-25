@@ -1,0 +1,15 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: backend
+    image: python:3.12
+    commands:
+      - cd backend
+      - pip install -r requirements.txt
+      - python main.py
+
+trigger:
+  branch:
+    - master

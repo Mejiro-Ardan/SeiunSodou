@@ -45,5 +45,6 @@
   "password_reset_success": "パスワードのリセットに成功しました",
   "invalid_parameters": "無効なパラメータ",
   "sendingCaptcha": "認証コードを送信しています",
-  "redirecting_to_signin": "ログインページへのリダイレクトの準備"
+  "redirecting_to_signin": "ログインページへのリダイレクトの準備",
+  "signout_failed": "ログアウトに失敗しました"
 }
