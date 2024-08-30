@@ -7,10 +7,11 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@nuxt/image": "^1.7.1",
+    "@nuxt/image": "^1.8.0",
     "@nuxt/kit": "^3.13.0",
     "@nuxt/ui": "^2.18.4",
     "@nuxtjs/google-fonts": "^3.2.0",

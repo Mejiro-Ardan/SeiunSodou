@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const RuntimeConfig = useRuntimeConfig();
+
 /**
  * 创建并返回一个 MongoDB 客户端实例。
  * @returns {MongoClient} MongoDB 客户端实例
@@ -30,16 +31,32 @@ function mongoClient() {
 }
 
 /**
+ * 带有超时机制的连接函数。
+ * @param {MongoClient} client - MongoDB 客户端实例
+ * @param {number} timeout - 超时时间（毫秒）
+ * @returns {Promise<void>} 连接成功或超时错误
+ */
+async function connectWithTimeout(client, timeout = 5000) {
+    return Promise.race([
+        client.connect(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('连接数据库超时')), timeout))
+    ]);
+}
+
+/**
  * 检查数据库是否存在。
  * @param {string} dbName - 数据库名称
  * @returns {Promise<boolean>} 如果数据库存在则返回 true，否则返回 false
  */
 export async function check_db(dbName) {
     const client = mongoClient();
-    await client.connect();
-    const dblist = await client.db().admin().listDatabases();
-    await client.close();
-    return dblist.databases.some(db => db.name === dbName);
+    try {
+        await connectWithTimeout(client);
+        const dblist = await client.db().admin().listDatabases();
+        return dblist.databases.some(db => db.name === dbName);
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -49,16 +66,19 @@ export async function check_db(dbName) {
  */
 export async function init_db(dbName) {
     const client = mongoClient();
-    await client.connect();
-    console.log('初始化数据库');
-    const db = client.db(dbName);
-    await db.createCollection('users');
-    await db.createCollection('user_data');
-    await db.createCollection('articles');
-    await db.createCollection('pending_verifications');
-    const collist = await db.listCollections().toArray();
-    await client.close();
-    return collist.some(col => col.name === 'users') && collist.some(col => col.name === 'articles');
+    try {
+        await connectWithTimeout(client);
+        console.log('初始化数据库');
+        const db = client.db(dbName);
+        await db.createCollection('users');
+        await db.createCollection('user_data');
+        await db.createCollection('articles');
+        await db.createCollection('pending_verifications');
+        const collist = await db.listCollections().toArray();
+        return collist.some(col => col.name === 'users') && collist.some(col => col.name === 'articles');
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -70,12 +90,14 @@ export async function init_db(dbName) {
  */
 export async function db_read(dbName, collectionName, filter = {}) {
     const client = mongoClient();
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-    const data = await collection.find(filter).toArray();
-    await client.close();
-    return data;
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        return await collection.find(filter).toArray();
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -87,12 +109,15 @@ export async function db_read(dbName, collectionName, filter = {}) {
  */
 export async function db_insert(dbName, collectionName, data) {
     const client = mongoClient();
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-    await collection.insertOne(data);
-    await client.close();
-    return true;
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        await collection.insertOne(data);
+        return true;
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -104,12 +129,14 @@ export async function db_insert(dbName, collectionName, data) {
  */
 export async function db_find(dbName, collectionName, data) {
     const client = mongoClient();
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-    const result = await collection.findOne(data);
-    await client.close();
-    return result;
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        return await collection.findOne(data);
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -122,12 +149,15 @@ export async function db_find(dbName, collectionName, data) {
  */
 export async function db_update(dbName, collectionName, query, data) {
     const client = mongoClient();
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-    await collection.updateOne(query, { $set: data });
-    await client.close();
-    return true;
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        await collection.updateOne(query, { $set: data });
+        return true;
+    } finally {
+        await client.close();
+    }
 }
 
 /**
@@ -139,10 +169,13 @@ export async function db_update(dbName, collectionName, query, data) {
  */
 export async function db_delete(dbName, collectionName, query) {
     const client = mongoClient();
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-    await collection.deleteOne(query);
-    await client.close();
-    return true;
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        await collection.deleteOne(query);
+        return true;
+    } finally {
+        await client.close();
+    }
 }
