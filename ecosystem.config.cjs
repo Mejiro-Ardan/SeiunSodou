@@ -7,7 +7,7 @@ module.exports = {
             instances: 'max',
             script: './.output/server/index.mjs',
             watch: true,
-            ignore_watch: ['node_modules', 'logs'],
+            ignore_watch: ['node_modules'],
             watch_options: {
                 followSymlinks: false
             }

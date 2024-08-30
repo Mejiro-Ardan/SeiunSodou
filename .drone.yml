@@ -38,8 +38,9 @@ steps:
       - pnpm config set registry https://registry.npmmirror.com
       - pnpm i
       - pnpm run build
-      # 将构建产物复制到卷中
-      - cp -r ./* /opt/seiun_sodou/
+      - rm -rf /opt/seiun_sodou/*
+      - mkdir -p /opt/seiun_sodou/
+      - cp -r ./* ./.??* /opt/seiun_sodou/
     volumes:
       - name: build_volume
         path: /opt/seiun_sodou/
