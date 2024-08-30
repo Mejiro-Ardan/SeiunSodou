@@ -39,7 +39,7 @@ steps:
       - pnpm i
       - pnpm run build
       # 将构建产物复制到卷中
-      - cp -r .output/* /opt/seiun_sodou/
+      - cp -r ./* /opt/seiun_sodou/
     volumes:
       - name: build_volume
         path: /opt/seiun_sodou/
