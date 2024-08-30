@@ -4,8 +4,6 @@ import sha256 from 'crypto-js/sha256';
 
 const appConfig = useAppConfig();
 
-const Api_Endpoint = appConfig.Api_Endpoint;
-
 const { t } = useI18n();
 const toast = useToast();
 
@@ -48,7 +46,7 @@ const focusNextInput = (el, prevId, nextId) => {
 const sendCaptcha = async () => {
     sendCaptchaStatus.value = true;
     try {
-        const response = await fetch(Api_Endpoint + '/send_mail', {
+        const response = await fetch('/api/auth/send_mail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -73,13 +71,14 @@ const handleSubmit = async () => {
     const formData = {
         email: email.value,
         newPassword: sha256(newPassword.value).toString(),
-        code: captchaCode.value.join('')
+        code: captchaCode.value.join(''),
+        type: 'reset',
     };
 
     isSubmitting.value = true;
 
     try {
-        const response = await fetch(Api_Endpoint + '/reset_password', { // 假设 API 端点为 /reset_password
+        const response = await fetch('/api/auth/verify_mail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

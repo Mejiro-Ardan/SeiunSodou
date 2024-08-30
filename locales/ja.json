@@ -46,5 +46,7 @@
   "invalid_parameters": "無効なパラメータ",
   "sendingCaptcha": "認証コードを送信しています",
   "redirecting_to_signin": "ログインページへのリダイレクトの準備",
-  "signout_failed": "ログアウトに失敗しました"
+  "signout_failed": "ログアウトに失敗しました",
+  "internal_server_error": "サーバーエラー",
+  "authorization_header_missing_or_invalid": "認証ヘッダーが見つからないか無効です"
 }

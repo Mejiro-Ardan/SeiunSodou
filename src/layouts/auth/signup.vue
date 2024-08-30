@@ -8,8 +8,6 @@ import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
-const appConfig = useAppConfig();
-const Api_Endpoint = appConfig.Api_Endpoint;
 
 const captchaStore = useCaptchaStore();
 const toast = useToast();
@@ -62,8 +60,6 @@ function focusNextInput(el, prevId, nextId) {
     }
 }
 
-console.log(Api_Endpoint)
-
 onMounted(async () => {
     await authStore.initializeToken();
     if (authStore.Status && authStore.Status.code === '200') {
@@ -89,7 +85,7 @@ const sendCaptcha = async () => {
         return;
     }
     try {
-        const response = await fetch(Api_Endpoint + '/send_mail', {
+        const response = await fetch('/api/auth/send_mail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,14 +115,15 @@ const handleSubmit = async () => {
     // 获取表单数据
     const formData = {
         email: email.value,
-        password: sha256(password.value).toString(), // 对密码进行SHA-256加密
-        code: captchaCode.value.join('') // 将验证码数组合并为字符串
+        password: sha256(password.value).toString(),
+        code: captchaCode.value.join(''),
+        type: 'signup',
     };
 
     isSubmitting.value = true;
 
     try {
-        const response = await fetch(Api_Endpoint + '/register_verify', {
+        const response = await fetch('/api/auth/verify_mail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

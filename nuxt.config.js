@@ -1,6 +1,19 @@
 import { fileURLToPath } from 'url';
 import { appConfig } from './app.config'; // 确保正确导入 appConfig
+
 require('dotenv').config();
+
+const runtimeEnv = {
+  JWT_SECRET: process.env.JWT_SECRET,
+  SMTP_SERVER: process.env.SMTP_SERVER,
+  SMTP_PORT: process.env.SMTP_PORT,
+  SMTP_SENDER: process.env.SMTP_SENDER,
+  SMTP_PASSWARD: process.env.SMTP_PASSWARD,
+  MONGO_HOST: process.env.MONGO_HOST,
+  MONGO_PORT: process.env.MONGO_PORT,
+  MONGO_USER: process.env.MONGO_USER,
+  MONGO_PASSWORD: process.env.MONGO_PASSWORD
+};
 
 export default defineNuxtConfig({
   appConfig: appConfig,
@@ -15,9 +28,7 @@ export default defineNuxtConfig({
     "nuxtjs-naive-ui"
   ],
   runtimeConfig: {
-    public: {
-      Api_Endpoint: process.env.API_ENDPOINT,
-    }
+    ...runtimeEnv
   },
   ui: {
     notifications: {

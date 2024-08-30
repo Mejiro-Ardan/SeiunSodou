@@ -6,8 +6,6 @@ import { useAuthStore } from '@/stores/verifyAuth';
 import Loading from '@/components/Loading.vue';
 
 const { t } = useI18n();
-const appConfig = useAppConfig();
-const Api_Endpoint = appConfig.Api_Endpoint;
 const toast = useToast();
 const authStore = useAuthStore();
 
@@ -25,7 +23,7 @@ const handleLogin = async () => {
     isSubmitting.value = true;
 
     try {
-        const response = await fetch(`${Api_Endpoint}/login`, {
+        const response = await fetch(`/api/auth/signin`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

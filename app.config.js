@@ -18,7 +18,6 @@ export const appConfig = {
             text: '© {{date}} 星雲草堂SeiunSodou.'
         }
     },
-    Api_Endpoint: process.env.API_ENDPOINT
 };
 
 export default {

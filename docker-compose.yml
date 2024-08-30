@@ -1,10 +1,9 @@
 services:
-  backend:
-    image: ghcr.io/mejiro-ardan/seiunsodou/backend:latest
-    container_name: backend
+  seiunsodou:
+    image: ghcr.io/mejiro-ardan/seiunsodou/seiunsodou:latest
+    container_name: seiunsodou
     environment:
       - TZ=Asia/Shanghai
-      # Backend
       - JWT_SECRET =  "" # JWT密钥，必填
       - SMTP_SERVER = "" # SMTP服务器，默认启用starttls
       - SMTP_PORT = "" # SMTP端口
@@ -14,26 +13,12 @@ services:
       - MONGO_HOST = "" # MongoDB主机
       - MONGO_PASSWORD = "" # MongoDB密码
       - MONGO_USER = "" # MongoDB用户
-    volumes:
-      - ./data/backend:/data/backend
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mongo
-    networks:
-      - seiunsodou-network
-    restart: unless-stopped
-
-  frontend:
-    image: ghcr.io/mejiro-ardan/seiunsodou/frontend:latest
-    container_name: frontend
     ports:
       - "3000:3000"
-    environment:
-      # Frontend
-      API_ENDPOINT: "http://example.com/api" # 后端api地址
     networks:
       - seiunsodou-network
+    depends_on:
+      - mongo
     restart: unless-stopped
 
   mongo:

@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
 
-import { useRuntimeConfig } from '#app';
-
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: null,
@@ -19,8 +17,6 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('token');
         },
         async verify() {
-            const runtimeConfig = useRuntimeConfig();
-            const Api_Endpoint = runtimeConfig.public.Api_Endpoint;
 
             if (!this.token) {
                 this.Status = { code: "403", message: "token_invalid", status: "failed" };
@@ -28,7 +24,7 @@ export const useAuthStore = defineStore('auth', {
                 return this.Status;
             }
             try {
-                const response = await fetch(`${Api_Endpoint}/verify`, {
+                const response = await fetch(`/api/status/verify_auth`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
