@@ -1,8 +1,9 @@
 kind: pipeline
 type: docker
 name: default
+
 steps:
-  - name: seiun_sodou
+  - name: seiun_sodou # Nuxt Build
     image: node:20
     environment:
       JWT_SECRET:
@@ -35,8 +36,19 @@ steps:
       - export MONGO_PASSWORD=$MONGO_PASSWORD
       - npm i -g pnpm --registry=https://registry.npmmirror.com
       - pnpm config set registry https://registry.npmmirror.com
-      - pnpm i 
+      - pnpm i
       - pnpm run build
+      # 将构建产物复制到卷中
+      - cp -r .output/* /opt/seiun_sodou/
+    volumes:
+      - name: build_volume
+        path: /opt/seiun_sodou/
+
+volumes:
+  - name: build_volume
+    host:
+      path: /opt/seiun_sodou/
+
 trigger:
   branch:
     - master
