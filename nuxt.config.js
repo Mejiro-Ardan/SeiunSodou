@@ -8,7 +8,7 @@ const runtimeEnv = {
   SMTP_SERVER: process.env.SMTP_SERVER,
   SMTP_PORT: process.env.SMTP_PORT,
   SMTP_SENDER: process.env.SMTP_SENDER,
-  SMTP_PASSWARD: process.env.SMTP_PASSWARD,
+  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
   MONGO_HOST: process.env.MONGO_HOST,
   MONGO_PORT: process.env.MONGO_PORT,
   MONGO_USER: process.env.MONGO_USER,
