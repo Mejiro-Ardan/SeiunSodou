@@ -48,5 +48,12 @@
   "redirecting_to_signin": "准备重定向到登录页面",
   "signout_failed": "退出登录失败",
   "internal_server_error": "服务器错误",
-  "authorization_header_missing_or_invalid": "授权头丢失或无效"
+  "authorization_header_missing_or_invalid": "授权头丢失或无效",
+  "loading": "加载中",
+  "post": "发帖",
+  "favorites": "收藏",
+  "following": "关注",
+  "loggedInAs": "已登录为",
+  "signout_success": "退出登录成功",
+  "recommendSignup": "欢迎来到星云草堂SeiunSodou，选择注册或登录"
 }

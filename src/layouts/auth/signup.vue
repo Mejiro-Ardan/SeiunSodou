@@ -4,8 +4,6 @@ import sha256 from 'crypto-js/sha256';
 import { useCaptchaStore } from '@/stores/captchaStore';
 import { useAuthStore } from '@/stores/verifyAuth';
 
-import Loading from '@/components/Loading.vue';
-
 const { t } = useI18n();
 const authStore = useAuthStore();
 
@@ -21,7 +19,6 @@ const passwordTouched = ref(false);
 const confirmPasswordTouched = ref(false);
 const isAgreementAccepted = ref(false);
 const sendCaptchaStatus = ref(false);
-const isLoading = ref(true);
 const isSubmitting = ref(false);
 
 const passwordsMatch = computed(() => password.value === confirmPassword.value);
@@ -60,12 +57,12 @@ function focusNextInput(el, prevId, nextId) {
     }
 }
 
+await authStore.initializeToken();
+if (authStore.Status && authStore.Status.code === '200') {
+    await navigateTo('/auth/');
+}
+
 onMounted(async () => {
-    await authStore.initializeToken();
-    if (authStore.Status && authStore.Status.code === '200') {
-        await navigateTo('/auth/');
-    }
-    isLoading.value = false;
 
     captchaStore.initializeCountdown();
 
@@ -149,8 +146,7 @@ const handleSubmit = async () => {
 <template>
     <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div class="flex items-center justify-center py-12">
-            <Loading v-if="isLoading" />
-            <div class="mx-auto w-[350px] space-y-6" v-show="!isLoading">
+            <div class="mx-auto w-[350px] space-y-6">
                 <div class="space-y-2 text-center">
                     <h1 class="text-3xl font-bold">{{ $t('createAccount') }}</h1>
                     <p class="text-muted-foreground">{{ $t('joinDescription') }}</p>

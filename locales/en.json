@@ -48,5 +48,12 @@
   "redirecting_to_signin": "Preparing to redirect to the login page",
   "signout_failed": "Logout failed",
   "internal_server_error": "Internal server error",
-  "authorization_header_missing_or_invalid": "Authorization header missing or invalid"
+  "authorization_header_missing_or_invalid": "Authorization header missing or invalid",
+  "loading": "Loading",
+  "post": "Post",
+  "favorites": "Favorites",
+  "following": "Following",
+  "loggedInAs": "Logged in as",
+  "signout_success": "Logout successfully",
+  "recommendSignup": "Welcome to SeiunSodou, choose to SignUp or SignIn"
 }

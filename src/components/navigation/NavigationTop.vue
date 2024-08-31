@@ -1,41 +1,79 @@
 <script setup>
+import { useAuthStore } from '@/stores/verifyAuth';
+
 const appConfig = useAppConfig();
 const toast = useToast();
-const t = useI18n();
+const authStore = useAuthStore();
+const route = useRoute();
+const { t } = useI18n();
 
 const NavigationTopConfig = appConfig.NavigationTopConfig;
 
-const items = [
-    [{
-        label: 'ben@example.com',
-        slot: 'account',
-        disabled: true
-    }], [{
-        label: 'Settings',
-        icon: 'i-heroicons-cog-8-tooth'
-    }], [{
-        label: 'Documentation',
-        icon: 'i-heroicons-book-open'
-    }, {
-        label: 'Changelog',
-        icon: 'i-heroicons-megaphone'
-    }, {
-        label: 'Status',
-        icon: 'i-heroicons-signal'
-    }], [{
-        label: 'Sign out',
-        icon: 'i-heroicons-arrow-left-on-rectangle',
-        click: async () => {
-            try {
-                localStorage.removeItem('token');
-                await navigateTo('/auth/signin')
-            } catch (error) {
-                toast.add({ title: t('signout_failed'), color: "red" })
-                console.error('Signout_failed:', error);
-            }
-        }
-    }]
-]
+const userInfo = ref();
+const items = ref([]);
+
+const signinStatus = ref()
+
+const updateUserInfo = async () => {
+    await authStore.initializeToken();
+    if (authStore.Status && authStore.Status.code === '200') {
+        await authStore.get_userinfo();
+        userInfo.value = authStore.userInfo;
+        signinStatus.value = true;
+        items.value = [
+            [{
+                label: userInfo.value.uid,
+                slot: 'account',
+                disabled: true
+            }], [{
+                label: 'Settings',
+                icon: 'i-heroicons-cog-8-tooth'
+            }], [{
+                label: 'Documentation',
+                icon: 'i-heroicons-book-open'
+            }, {
+                label: 'Changelog',
+                icon: 'i-heroicons-megaphone'
+            }, {
+                label: 'Status',
+                icon: 'i-heroicons-signal'
+            }], [{
+                label: 'Sign out',
+                icon: 'i-heroicons-arrow-left-on-rectangle',
+                click: async () => {
+                    try {
+                        authStore.clearToken();
+                        toast.add({ title: t('signout_success') });
+                        await navigateTo('/auth/signin');
+                    } catch (error) {
+                        toast.add({ title: t('signout_failed'), color: "red" });
+                        console.error('Signout_failed:', error);
+                    }
+                }
+            }]
+        ];
+    } else {
+        signinStatus.value = false
+        items.value = [
+            [{
+                slot: 'recommend',
+                disabled: true
+            }],
+            [{
+                label: t('signIn'),
+                icon: "ri:login-box-line",
+                click: () => navigateTo('/auth/signin')
+            }], [{
+                label: t('signUp'),
+                icon: "ri:file-list-2-line",
+                click: () => navigateTo('/auth/signup')
+            }]
+        ];
+    }
+};
+
+await updateUserInfo();
+watch(route, updateUserInfo);
 </script>
 
 <template>
@@ -64,22 +102,41 @@ const items = [
 
                 <!-- User Dropdown -->
                 <div class="flex items-center gap-4">
-                    <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }"
-                        :popper="{ placement: 'bottom-start' }">
-                        <UAvatar src="https://api-space.tnxg.top/avatar?s=qq" />
-                        <template #account="{ item }">
-                            <div class="text-left">
-                                <p class="text-sm text-gray-500">Signed in as</p>
-                                <p class="truncate font-medium text-gray-900">
-                                    {{ item.label }}
-                                </p>
-                            </div>
-                        </template>
-                        <template #item="{ item }">
-                            <span class="truncate">{{ item.label }}</span>
-                            <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 ms-auto" />
-                        </template>
-                    </UDropdown>
+                    <template v-if="signinStatus">
+                        <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }"
+                            :popper="{ placement: 'bottom-start' }">
+                            <UAvatar :src="userInfo?.avatar" />
+                            <template #account="{ item }">
+                                <div class="text-left">
+                                    <p class="text-sm text-gray-500">{{ $t('loggedInAs') }}</p>
+                                    <p class="truncate font-medium text-gray-900">
+                                        UID: {{ item.label }}
+                                    </p>
+                                </div>
+                            </template>
+                            <template #item="{ item }">
+                                <span class="truncate">{{ item.label }}</span>
+                                <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 ms-auto" />
+                            </template>
+                        </UDropdown>
+                    </template>
+                    <template v-else>
+                        <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }"
+                            :popper="{ placement: 'bottom-start' }">
+                            <UButton role="button" class="btn text-white btn-sm bg-primary hover:bg-primary/90">
+                                {{ $t('signIn') }}
+                            </UButton>
+                            <template #recommend>
+                                <div class="text-left">
+                                    <p class="text-sm text-gray-500">{{ $t('recommendSignup') }}</p>
+                                </div>
+                            </template>
+                            <template #item="{ item }">
+                                <span class="truncate">{{ item.label }}</span>
+                                <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 ms-auto" />
+                            </template>
+                        </UDropdown>
+                    </template>
                 </div>
             </nav>
         </header>

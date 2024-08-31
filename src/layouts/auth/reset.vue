@@ -2,8 +2,6 @@
 import { ref, computed } from 'vue';
 import sha256 from 'crypto-js/sha256';
 
-const appConfig = useAppConfig();
-
 const { t } = useI18n();
 const toast = useToast();
 

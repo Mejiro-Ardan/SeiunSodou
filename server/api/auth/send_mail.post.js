@@ -4,13 +4,13 @@ import { sendCode } from "~/server/lib/mail";
 export default defineEventHandler(async (event) => {
 
     // const query = getQuery(event)
-    const body = await readBody(event)
+    const body = await readBody(event);
     const email = body.email;
     const requestType = body.type;
 
     // 检查请求参数是否有效
     if (!email || !requestType || !["signup", "reset"].includes(requestType)) {
-        setResponseStatus(event, 404)
+        setResponseStatus(event, 404);
         event.node.res.end(JSON.stringify({ code: "400", message: "invalid_parameters", status: "failed", data: body }));
         return;
     }
@@ -27,19 +27,21 @@ export default defineEventHandler(async (event) => {
             return;
         }
 
-        const currentTimeMs = new Date(currentTime).getTime();
-        const registerEntryTimeMs = new Date(registerEntry.time).getTime();
-        const timeDifferenceSeconds = (currentTimeMs - registerEntryTimeMs) / 1000;
+        if (registerEntry) {
+            const currentTimeMs = new Date(currentTime).getTime();
+            const registerEntryTimeMs = new Date(registerEntry.time).getTime();
+            const timeDifferenceSeconds = (currentTimeMs - registerEntryTimeMs) / 1000;
 
-        if (registerEntry && timeDifferenceSeconds < 60) {
-            const waitTime = 60 - Math.floor(timeDifferenceSeconds);
-            event.node.res.statusCode = 403;
-            event.node.res.end(JSON.stringify({
-                code: "403",
-                message: "wait_before_resend",
-                wait_time: waitTime,
-            }));
-            return;
+            if (timeDifferenceSeconds < 60) {
+                const waitTime = 60 - Math.floor(timeDifferenceSeconds);
+                event.node.res.statusCode = 403;
+                event.node.res.end(JSON.stringify({
+                    code: "403",
+                    message: "wait_before_resend",
+                    wait_time: waitTime,
+                }));
+                return;
+            }
         }
 
         const code = Math.floor(Math.random() * 900000) + 100000;
@@ -57,15 +59,21 @@ export default defineEventHandler(async (event) => {
             return;
         }
 
-        if (registerEntry && (currentTime - registerEntry.time).seconds < 60) {
-            const waitTime = 60 - (currentTime - registerEntry.time).seconds;
-            event.node.res.statusCode = 403;
-            event.node.res.end(JSON.stringify({
-                code: "403",
-                message: "wait_before_resend",
-                wait_time: waitTime,
-            }));
-            return;
+        if (registerEntry) {
+            const currentTimeMs = new Date(currentTime).getTime();
+            const registerEntryTimeMs = new Date(registerEntry.time).getTime();
+            const timeDifferenceSeconds = (currentTimeMs - registerEntryTimeMs) / 1000;
+
+            if (timeDifferenceSeconds < 60) {
+                const waitTime = 60 - Math.floor(timeDifferenceSeconds);
+                event.node.res.statusCode = 403;
+                event.node.res.end(JSON.stringify({
+                    code: "403",
+                    message: "wait_before_resend",
+                    wait_time: waitTime,
+                }));
+                return;
+            }
         }
 
         const code = Math.floor(Math.random() * 900000) + 100000;

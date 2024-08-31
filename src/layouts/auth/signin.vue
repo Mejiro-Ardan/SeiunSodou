@@ -3,15 +3,12 @@ import { ref, onMounted, watch } from 'vue';
 import sha256 from 'crypto-js/sha256';
 import { useAuthStore } from '@/stores/verifyAuth';
 
-import Loading from '@/components/Loading.vue';
-
 const { t } = useI18n();
 const toast = useToast();
 const authStore = useAuthStore();
 
 const email = ref('');
 const password = ref('');
-const isLoading = ref(true);
 const isSubmitting = ref(false);
 
 const handleLogin = async () => {
@@ -50,13 +47,11 @@ const handleLogin = async () => {
 };
 
 
-onMounted(async () => {
-    await authStore.initializeToken();
-    if (authStore.Status && authStore.Status.code === '200') {
-        await navigateTo('/auth/');
-    }
-    isLoading.value = false;
-});
+await authStore.initializeToken();
+if (authStore.Status && authStore.Status.code === '200') {
+    await navigateTo('/auth/');
+}
+
 
 watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
@@ -69,8 +64,7 @@ watch(() => authStore.Status, async (newStatus) => {
 <template>
     <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div class="flex items-center justify-center py-12">
-            <Loading v-if="isLoading" />
-            <div class="mx-auto w-[350px] space-y-6" v-show="!isLoading">
+            <div class="mx-auto w-[350px] space-y-6">
                 <div class="space-y-2 text-center">
                     <h1 class="text-3xl font-bold">{{ $t('welcome') }}</h1>
                     <p class="text-muted-foreground">{{ $t('enterCredentials') }}</p>

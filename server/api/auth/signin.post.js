@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const email = body.email;
   const password = body.password;
-  console.log(bcrypt.hashSync('3e98aac202edd76dd94ed3b885fd90f962adfa2c7577b7ed969c29610bc7d6a1', 10))
   const user = await db_find("SeiunSodou", "users", { email: email });
 
   if (!user) {
