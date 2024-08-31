@@ -38,12 +38,12 @@ watch(route, updateUserInfo);
                 <template v-if="signinStatus">
                     <div class="p-4 text-center">
                         <div class="space-y-1.5 flex flex-col items-center gap-2 bg-muted/50 p-4">
-                            <span class="relative flex shrink-0 overflow-hidden rounded-full h-16 w-16">
-                                <img class="aspect-square h-full w-full" :src="userInfo.avatar" />
+                            <span class="relative flex shrink-0 overflow-hidden mask mask-squircle h-[4.5rem] w-[4.5rem]">
+                                <NuxtImg class="h-full w-full" :src="userInfo.avatar" />
                             </span>
                             <div class="grid gap-0.5 text-center">
-                                <div class="font-semibold text-base sm:text-lg">{{ userInfo.nick }}</div>
-                                <div class="text-sm sm:text-base text-muted-foreground">{{ userInfo.email }}</div>
+                                <div class="font-semibold text-lg p-1">{{ userInfo.nick }}</div>
+                                <div class="text-sm text-muted-foreground">{{ userInfo.bio }}</div>
                             </div>
                         </div>
                         <div class="divider"></div>

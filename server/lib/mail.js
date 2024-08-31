@@ -29,7 +29,7 @@ export async function sendCode(receiverEmail, verificationCode, requestType) {
         secure: false,
         auth: {
             user: RuntimeConfig.SMTP_SENDER,
-            pass: 'givqhsenpxvlxere'
+            pass: RuntimeConfig.SMTP_PASSWORD
         }
     });
     // 设置邮件选项
