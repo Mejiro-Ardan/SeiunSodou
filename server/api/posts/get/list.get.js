@@ -32,7 +32,6 @@ export default defineEventHandler(async (event) => {
         page,
         size,
         total,
-        total: total,
         totalPages,
         articles
     };

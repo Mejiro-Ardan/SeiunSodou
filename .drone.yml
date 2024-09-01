@@ -25,6 +25,7 @@ steps:
       MONGO_PASSWORD:
         from_secret: MONGO_PASSWORD
     commands:
+      - export NODE_OPTIONS="--max-old-space-size=4096"
       - export JWT_SECRET=$JWT_SECRET
       - export SMTP_SERVER=$SMTP_SERVER
       - export SMTP_PORT=$SMTP_PORT

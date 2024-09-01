@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watchEffect, nextTick } from 'vue';
 import ArticlesPanel from '@/components/ArticlesPanel.vue';
-import { NCarousel, NPagination } from 'naive-ui';
+import { NCarousel, NPagination, NBackTop } from 'naive-ui';
 
 // 当前页码
 const page = ref(1);
@@ -29,6 +29,7 @@ watchEffect(async () => {
 </script>
 
 <template>
+    <NBackTop :right="100" />
     <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <NCarousel dot-type="line" dot-placement="right" show-arrow="showArrow" direction="direction" mousewheel
             draggable keyboard autoplay>
