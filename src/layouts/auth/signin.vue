@@ -11,8 +11,16 @@ const email = ref('');
 const password = ref('');
 const isSubmitting = ref(false);
 
+const emailInput = ref(null);
+const passwordInput = ref(null);
+
 const handleLogin = async () => {
-    if (!email.value || !password.value) {
+    if (!email.value) {
+        passwordInput.value.focus();
+        return;
+    }
+
+    if (!password.value) {
         toast.add({ title: t('email_password_required'), color: "red" });
         return;
     }
@@ -46,19 +54,16 @@ const handleLogin = async () => {
     }
 };
 
-
 await authStore.initializeToken();
 if (authStore.Status && authStore.Status.code === '200') {
     await navigateTo('/auth/');
 }
-
 
 watch(() => authStore.Status, async (newStatus) => {
     if (newStatus && newStatus.code === '200') {
         await navigateTo('/auth/');
     }
 });
-
 </script>
 
 <template>
@@ -74,14 +79,14 @@ watch(() => authStore.Status, async (newStatus) => {
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:mail-outline" />
                             <input type="text" class="grow border-none focus:ring-0" v-model="email"
-                                :placeholder="$t('emailPlaceholder')" />
+                                :placeholder="$t('emailPlaceholder')" @keyup.enter="passwordInput.focus()" ref="emailInput" />
                         </label>
                     </div>
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:password" />
                             <input type="password" class="grow border-none focus:ring-0" v-model="password"
-                                :placeholder="$t('passwordPlaceholder')" />
+                                :placeholder="$t('passwordPlaceholder')" @keyup.enter="handleLogin" ref="passwordInput" />
                         </label>
                         <NuxtLink class="ml-auto inline-block text-sm underline" to="/auth/reset">
                             {{ $t('forgotPassword') }}

@@ -44,7 +44,7 @@ const updateUserInfo = async () => {
                     try {
                         authStore.clearToken();
                         toast.add({ title: t('signout_success') });
-                        await navigateTo('/auth/signin');
+                        await navigateTo('/auth/');
                     } catch (error) {
                         toast.add({ title: t('signout_failed'), color: "red" });
                         console.error('Signout_failed:', error);
@@ -73,7 +73,8 @@ const updateUserInfo = async () => {
 };
 
 await updateUserInfo();
-watch(route, updateUserInfo);
+watch(route, updateUserInfo, { immediate: true });
+watch(() => authStore.token, updateUserInfo, { immediate: true });
 </script>
 
 <template>

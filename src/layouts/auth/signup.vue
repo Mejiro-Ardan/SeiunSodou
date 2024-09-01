@@ -45,17 +45,34 @@ watch(() => authStore.Status, async (newStatus) => {
         await navigateTo('/auth/');
     }
 });
-function focusNextInput(el, prevId, nextId) {
-    if (el.value.length === 0) {
-        if (prevId) {
-            document.getElementById(prevId).focus();
+const focusNextInput = (el, prevId, nextId) => {
+    if (el.value.length === 1) {
+        // 当输入长度为1时，才进行焦点移动，防止粘贴多个字符时立即跳转
+        if (nextId) {
+            document.getElementById(nextId).focus();
         }
-    } else {
+    } else if (el.value.length === 0 && prevId) {
+        // 如果当前输入框被清空，则回到上一个输入框
+        document.getElementById(prevId).focus();
+    } else if (el.value.length > 1) {
+        // 如果是复制粘贴了多个字符，分配到各个输入框中
+        const chars = el.value.split('');
+        el.value = chars[0]; // 保留第一个字符
+        for (let i = 1; i < chars.length; i++) {
+            const nextEl = document.getElementById(nextId);
+            if (nextEl) {
+                nextEl.value = chars[i];
+                nextId = nextEl.getAttribute('data-focus-input-next');
+            } else {
+                break;
+            }
+        }
+        // 聚焦到最后一个被填入字符的输入框
         if (nextId) {
             document.getElementById(nextId).focus();
         }
     }
-}
+};
 
 await authStore.initializeToken();
 if (authStore.Status && authStore.Status.code === '200') {

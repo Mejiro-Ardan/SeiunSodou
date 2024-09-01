@@ -27,3 +27,4 @@ logs
 
 #backend
 __pycache__
+drone_fast_secrets.py

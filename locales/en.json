@@ -55,5 +55,7 @@
   "following": "Following",
   "loggedInAs": "Logged in as",
   "signout_success": "Logout successfully",
-  "recommendSignup": "Welcome to SeiunSodou, choose to SignUp or SignIn"
+  "recommendSignup": "Welcome to SeiunSodou, choose to SignUp or SignIn",
+  "account_authentication": "Account Authentication",
+  "goToHome": "Go to Home"
 }

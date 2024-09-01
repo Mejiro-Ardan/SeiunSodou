@@ -55,5 +55,7 @@
   "following": "フォロー中",
   "loggedInAs": "としてログイン",
   "signout_success": "サインアウトに成功しました",
-  "recommendSignup": "星云草堂SeiunSodou へようこそ。登録またはログインを選択してください"
+  "recommendSignup": "星云草堂SeiunSodou へようこそ。登録またはログインを選択してください",
+  "account_authentication": "アカウント認証",
+  "goToHome": "ホームへ行く"
 }

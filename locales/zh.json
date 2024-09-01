@@ -55,5 +55,7 @@
   "following": "关注",
   "loggedInAs": "已登录为",
   "signout_success": "退出登录成功",
-  "recommendSignup": "欢迎来到星云草堂SeiunSodou，选择注册或登录"
+  "recommendSignup": "欢迎来到星云草堂SeiunSodou，选择注册或登录",
+  "account_authentication": "账户认证",
+  "goToHome": "返回首页"
 }
