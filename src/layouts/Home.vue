@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, nextTick } from 'vue';
 import ArticlesPanel from '@/components/ArticlesPanel.vue';
 import { NCarousel, NPagination } from 'naive-ui';
 
@@ -19,9 +19,11 @@ const fetchArticles = async (pageNumber) => {
     totalPages.value = response.totalPages; // 假设API返回totalPages
 };
 
-// 监听页码变化，自动获取数据
-watchEffect(() => {
-    fetchArticles(page.value);
+// 监听页码变化，自动获取数据并滚动到顶部
+watchEffect(async () => {
+    await fetchArticles(page.value);
+    await nextTick();
+    document.getElementById('articles-panel').scrollIntoView({ behavior: 'smooth' });
 });
 
 </script>
@@ -35,7 +37,7 @@ watchEffect(() => {
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=230" />
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=20" />
         </NCarousel>
-        <ArticlesPanel :Articles="newsArticles" class="mt-4" />
+        <ArticlesPanel id="articles-panel" :Articles="newsArticles" class="mt-4" />
         <NPagination v-model:page="page" :page-count="totalPages" />
     </div>
 </template>
