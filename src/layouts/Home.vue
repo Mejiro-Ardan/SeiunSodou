@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watchEffect, nextTick } from 'vue';
+import { ref, watchEffect, nextTick, onMounted } from 'vue';
 import ArticlesPanel from '@/components/ArticlesPanel.vue';
-import { NCarousel, NPagination, NBackTop } from 'naive-ui';
+import { NCarousel, NPagination } from 'naive-ui';
 
 // 当前页码
 const page = ref(1);
@@ -12,6 +12,9 @@ const newsArticles = ref([]);
 // 总页数
 const totalPages = ref(1);
 
+// 控制 NCarousel 显示状态
+const isCarouselVisible = ref(false);
+
 // 获取文章数据的函数
 const fetchArticles = async (pageNumber) => {
     const response = await $fetch(`/api/posts/get/list?page=${pageNumber}`);
@@ -19,27 +22,33 @@ const fetchArticles = async (pageNumber) => {
     totalPages.value = response.totalPages; // 假设API返回totalPages
 };
 
-// 监听页码变化，自动获取数据并滚动到顶部
-watchEffect(async () => {
+await fetchArticles();
+
+// 页面加载完成后显示 NCarousel
+onMounted(() => {
+    isCarouselVisible.value = true;
+    document.getElementById('carousel').scrollIntoView({ behavior: 'smooth' });
+});
+
+// 分页变化处理函数
+const handlePageChange = async () => {
     await fetchArticles(page.value);
     await nextTick();
     document.getElementById('articles-panel').scrollIntoView({ behavior: 'smooth' });
-});
-
+};
 </script>
 
 <template>
-    <NBackTop :right="100" />
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <NCarousel dot-type="line" dot-placement="right" show-arrow="showArrow" direction="direction" mousewheel
-            draggable keyboard autoplay>
+    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <NCarousel id="carousel" v-show="isCarouselVisible" dot-type="line" dot-placement="right" direction="direction"
+            mousewheel draggable keyboard autoplay show-arrow>
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=220" />
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=202" />
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=230" />
             <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=20" />
         </NCarousel>
         <ArticlesPanel id="articles-panel" :Articles="newsArticles" class="mt-4" />
-        <NPagination v-model:page="page" :page-count="totalPages" />
+        <NPagination v-model:page="page" :page-count="totalPages" class="mt-4 mb-8" @update:page="handlePageChange" />
     </div>
 </template>
 

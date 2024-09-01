@@ -12,7 +12,7 @@ const NavigationTopConfig = appConfig.NavigationTopConfig;
 const userInfo = ref();
 const items = ref([]);
 
-const signinStatus = ref()
+const signinStatus = ref();
 
 const updateUserInfo = async () => {
     await authStore.initializeToken();
@@ -53,7 +53,7 @@ const updateUserInfo = async () => {
             }]
         ];
     } else {
-        signinStatus.value = false
+        signinStatus.value = false;
         items.value = [
             [{
                 slot: 'recommend',
@@ -78,9 +78,10 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
 </script>
 
 <template>
-    <div class="flex flex-col w-full min-h-screen">
-        <header class="flex items-center h-16 px-4 border-b bg-white md:px-6">
-            <nav class="flex w-full items-center gap-6 text-lg font-medium md:gap-5 md:text-sm">
+    <div class="flex flex-col w-full min-h-screen bg-white dark:bg-gray-900">
+        <header class="flex items-center h-16 px-4 border-b bg-white dark:bg-gray-800 md:px-6">
+            <nav
+                class="flex w-full items-center gap-6 text-lg font-medium text-gray-900 dark:text-gray-100 md:gap-5 md:text-sm">
                 <!-- Logo -->
                 <div class="flex items-center">
                     <div class="mask mask-squircle w-12 h-12 overflow-hidden">
@@ -94,7 +95,7 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                     <template v-for="(item, index) in NavigationTopConfig.sections" :key="index">
                         <NuxtLink :to="item.path" :class="{
                             'font-bold': $route.path === item.path,
-                            'text-muted-foreground': $route.path !== item.path
+                            'text-gray-500 dark:text-gray-400': $route.path !== item.path
                         }" class="text-base btn">
                             {{ $t(item.name) }}
                         </NuxtLink>
@@ -109,15 +110,16 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                             <UAvatar :src="userInfo?.avatar" />
                             <template #account="{ item }">
                                 <div class="text-left">
-                                    <p class="text-sm text-gray-500">{{ $t('loggedInAs') }}</p>
-                                    <p class="truncate font-medium text-gray-900">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $t('loggedInAs') }}</p>
+                                    <p class="truncate font-medium text-gray-900 dark:text-gray-100">
                                         UID: {{ item.label }}
                                     </p>
                                 </div>
                             </template>
                             <template #item="{ item }">
                                 <span class="truncate">{{ item.label }}</span>
-                                <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 ms-auto" />
+                                <UIcon :name="item.icon"
+                                    class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
                             </template>
                         </UDropdown>
                     </template>
@@ -129,12 +131,13 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                             </UButton>
                             <template #recommend>
                                 <div class="text-left">
-                                    <p class="text-sm text-gray-500">{{ $t('recommendSignup') }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $t('recommendSignup') }}</p>
                                 </div>
                             </template>
                             <template #item="{ item }">
                                 <span class="truncate">{{ item.label }}</span>
-                                <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 ms-auto" />
+                                <UIcon :name="item.icon"
+                                    class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
                             </template>
                         </UDropdown>
                     </template>
