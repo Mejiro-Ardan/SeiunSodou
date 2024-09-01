@@ -86,19 +86,21 @@ export async function init_db(dbName) {
  * @param {string} dbName - 数据库名称
  * @param {string} collectionName - 集合名称
  * @param {Object} [filter={}] - 查询过滤器
+ * @param {Object} [options={}] - 查询选项，包括分页和排序
  * @returns {Promise<Array>} 返回查询到的数据数组
  */
-export async function db_read(dbName, collectionName, filter = {}) {
+export async function db_read(dbName, collectionName, filter = {}, options = {}) {
     const client = mongoClient();
     try {
         await connectWithTimeout(client);
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
-        return await collection.find(filter).toArray();
+        return await collection.find(filter, options).toArray();
     } finally {
         await client.close();
     }
 }
+
 
 /**
  * 向数据库中插入数据。
@@ -175,6 +177,25 @@ export async function db_delete(dbName, collectionName, query) {
         const collection = db.collection(collectionName);
         await collection.deleteOne(query);
         return true;
+    } finally {
+        await client.close();
+    }
+}
+
+/**
+ * 获取数据库中某一集合的文档总数
+ * @param {string} dbName - 数据库名称
+ * @param {string} collectionName - 集合名称
+ * @param {Object} [filter={}] - 查询过滤器
+ * @returns {Promise<number>} 返回集合中的文档总数
+ */
+export async function db_count(dbName, collectionName, filter = {}) {
+    const client = mongoClient();
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        return await collection.countDocuments(filter);
     } finally {
         await client.close();
     }

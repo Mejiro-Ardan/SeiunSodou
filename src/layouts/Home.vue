@@ -1,14 +1,49 @@
+<script setup>
+import { ref, watchEffect } from 'vue';
+import ArticlesPanel from '@/components/ArticlesPanel.vue';
+import { NCarousel, NPagination } from 'naive-ui';
+
+// 当前页码
+const page = ref(1);
+
+// 文章数据
+const newsArticles = ref([]);
+
+// 总页数
+const totalPages = ref(1);
+
+// 获取文章数据的函数
+const fetchArticles = async (pageNumber) => {
+    const response = await $fetch(`/api/posts/get/list?page=${pageNumber}`);
+    newsArticles.value = response.articles;
+    totalPages.value = response.totalPages; // 假设API返回totalPages
+};
+
+// 监听页码变化，自动获取数据
+watchEffect(() => {
+    fetchArticles(page.value);
+});
+
+</script>
+
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <div class="text-center space-y-4">
-            <h1 class="text-8xl font-bold">世界建设中</h1>
-            <h2 class="text-3xl font-medium">サイト構築中</h2>
-            <h3 class="text-2xl">Sekai Under Construction</h3>
-        </div>
-        <footer class="text-center text-sm mt-8 mb-4">
-            <p>私たちの物語を再び書く</p>
-            <br>
-            <p> ©2024 星雲草堂 SeiunSodou.</p>
-        </footer>
+        <NCarousel dot-type="line" dot-placement="right" show-arrow="showArrow" direction="direction" mousewheel
+            draggable keyboard autoplay>
+            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=220" />
+            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=202" />
+            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=230" />
+            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=20" />
+        </NCarousel>
+        <ArticlesPanel :Articles="newsArticles" class="mt-4" />
+        <NPagination v-model:page="page" :page-count="totalPages" />
     </div>
 </template>
+
+<style scoped>
+.carousel-img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+</style>

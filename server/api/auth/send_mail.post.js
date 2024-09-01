@@ -3,7 +3,6 @@ import { sendCode } from "~/server/lib/mail";
 
 export default defineEventHandler(async (event) => {
 
-    // const query = getQuery(event)
     const body = await readBody(event);
     const email = body.email;
     const requestType = body.type;
