@@ -57,5 +57,10 @@
   "signout_success": "Logout successfully",
   "recommendSignup": "Welcome to SeiunSodou, choose to SignUp or SignIn",
   "account_authentication": "Account Authentication",
-  "goToHome": "Go to Home"
+  "goToHome": "Go to Home",
+  "AllRightsReserved": "All Rights Reserved",
+  "Contact": "Contact",
+  "Licensing": "Licensing",
+  "PrivacyPolicy": "Privacy Policy",
+  "About": "About"
 }

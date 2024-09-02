@@ -57,5 +57,10 @@
   "signout_success": "退出登录成功",
   "recommendSignup": "欢迎来到星云草堂SeiunSodou，选择注册或登录",
   "account_authentication": "账户认证",
-  "goToHome": "返回首页"
+  "goToHome": "返回首页",
+  "AllRightsReserved": "版权所有",
+  "Contact": "联系",
+  "Licensing": "许可",
+  "PrivacyPolicy": "隐私政策",
+  "About": "关于"
 }

@@ -57,5 +57,10 @@
   "signout_success": "サインアウトに成功しました",
   "recommendSignup": "星云草堂SeiunSodou へようこそ。登録またはログインを選択してください",
   "account_authentication": "アカウント認証",
-  "goToHome": "ホームへ行く"
+  "goToHome": "ホームへ行く",
+  "AllRightsReserved": "全著作権所有",
+  "Contact": "コンタクト",
+  "Licensing": "ライセンス",
+  "PrivacyPolicy": "プライバシーポリシー",
+  "About": "約"
 }
