@@ -7,6 +7,7 @@ const twConfig = {
   darkMode: 'media',
   content: [
     "**/pages/*.{js,vue,ts}",
+    "**/components/**.{js,vue,ts}",
     "**/src/*.{js,vue,ts}",
     "**/src/**/*.{js,vue,ts}",
     "./node_modules/flowbite/**/*.{js,ts}",

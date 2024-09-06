@@ -62,5 +62,14 @@
   "Contact": "Contact",
   "Licensing": "Licensing",
   "PrivacyPolicy": "Privacy Policy",
-  "About": "About"
+  "About": "About",
+  "backToArticles": "Back to Articles",
+  "createdAt": "Created at",
+  "modifiedAt": "Modified at",
+  "aiSummary": "AI Summary",
+  "author": "Author",
+  "license": "License",
+  "bookmark": "Bookmark",
+  "share": "Share",
+  "ccByNcSa": "CC BY-NC-SA 4.0"
 }

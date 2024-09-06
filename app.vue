@@ -8,4 +8,5 @@ import { NBackTop } from 'naive-ui'
   </Navigation>
   <UNotifications />
   <NBackTop :right="100" />
+  <NuxtLoadingIndicator />
 </template>

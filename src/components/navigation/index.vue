@@ -7,10 +7,10 @@ import NavigationTop from '@/components/navigation/NavigationTop.vue';
 
 const route = useRoute();
 
-const isMainPage = ref(route.path === '/');
+const isMainPage = ref(route.path === '/' || /^\/p\/[^\/]+$/.test(route.path));
 
 watch(route, (newRoute) => {
-    isMainPage.value = newRoute.path === '/';
+    isMainPage.value = newRoute.path === '/' || /^\/p\/[^\/]+$/.test(newRoute.path);
 });
 
 </script>

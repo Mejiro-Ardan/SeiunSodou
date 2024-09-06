@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { appConfig } from './app.config'; // 确保正确导入 appConfig
 
 require('dotenv').config();
@@ -25,7 +25,8 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxt/ui",
     "@pinia/nuxt",
-    "nuxtjs-naive-ui"
+    "nuxtjs-naive-ui",
+    'seiunsodou_mdc'
   ],
   runtimeConfig: {
     ...runtimeEnv
@@ -102,4 +103,49 @@ export default defineNuxtConfig({
   delayHydration: {
     mode: 'mount'
   },
+  mdc: {
+    remarkPlugins: {},
+    highlight: {
+      theme: 'dark-plus',
+      langs: [
+        'c',
+        'cpp',
+        'java',
+        'python',
+        'javascript',
+        'typescript',
+        'ruby',
+        'go',
+        'swift',
+        'kotlin',
+        'php',
+        'csharp',
+        'r',
+        'objective-c',
+        'perl',
+        'rust',
+        'dart',
+        'vue',
+        'vue-html',
+        'angular-html',
+        'angular-ts',
+        'svelte',
+        'tsx',
+        'astro',
+        'batch',
+        'html',
+        'css',
+        'scss',
+        'sql',
+        'toml',
+        'shell',
+        'powershell',
+        'lua',
+        'fsharp',
+        'markdown',
+        'mdc',
+        'nginx'
+      ]
+    },
+  }
 });

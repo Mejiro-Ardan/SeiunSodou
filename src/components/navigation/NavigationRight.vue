@@ -89,7 +89,7 @@ watch(route, updateUserInfo);
                             <div class="text-sm sm:text-base mt-2">
                                 <div class="mt-4 text-center text-sm sm:text-base">
                                     {{ $t('alreadyHaveAccount') }}{{ " " }}
-                                    <NuxtLink class="underline text-primary" to="/auth/signin">
+                                    <NuxtLink class="text-primary hover:underline" to="/auth/signin">
                                         {{ $t('signIn') }}
                                     </NuxtLink>
                                 </div>

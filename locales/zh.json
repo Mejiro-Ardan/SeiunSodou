@@ -62,5 +62,14 @@
   "Contact": "联系",
   "Licensing": "许可",
   "PrivacyPolicy": "隐私政策",
-  "About": "关于"
+  "About": "关于",
+  "backToArticles": "返回文章",
+  "createdAt": "创建时间",
+  "modifiedAt": "修改时间",
+  "aiSummary": "AI 摘要",
+  "author": "作者",
+  "license": "许可",
+  "bookmark": "书签",
+  "share": "分享",
+  "ccByNcSa": "CC BY-NC-SA 4.0"
 }

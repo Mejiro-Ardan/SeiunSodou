@@ -62,5 +62,14 @@
   "Contact": "コンタクト",
   "Licensing": "ライセンス",
   "PrivacyPolicy": "プライバシーポリシー",
-  "About": "約"
+  "About": "約",
+  "backToArticles": "記事に戻る",
+  "createdAt": "作成日",
+  "modifiedAt": "修正日",
+  "aiSummary": "AI 要約",
+  "author": "著者",
+  "license": "ライセンス",
+  "bookmark": "ブックマーク",
+  "share": "共有",
+  "ccByNcSa": "CC BY-NC-SA 4.0"
 }

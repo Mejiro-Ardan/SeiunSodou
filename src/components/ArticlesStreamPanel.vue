@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-    Articles: {
+    ArticlesStream: {
         type: Array,
         required: true
     }
@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
     <div class="container mx-auto p-4">
         <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-            <UCard v-for="article in props.Articles" :key="article.id" class="flex flex-col overflow-hidden">
+            <UCard v-for="article in props.ArticlesStream" :key="article.slug" class="flex flex-col overflow-hidden">
                 <template #header class="p-0">
                     <img :src="article.image" :alt="`Illustration for ${article.title}`"
                         class="h-48 w-full object-cover" />
@@ -20,7 +20,7 @@ const props = defineProps({
                         <span v-for="tag in article.tags" :key="tag" class="badge badge-primary">{{ tag }}</span>
                     </div>
                     <h2 class="mb-2 line-clamp-2">{{ article.title }}</h2>
-                    <p class="mb-4 line-clamp-3 text-sm text-gray-600">{{ article.excerpt }}</p>
+                    <p class="mb-4 line-clamp-3 text-sm text-gray-600">{{ article.summary }}</p>
                     <div class="text-xs text-gray-500 mt-4">{{ article.category }}</div>
                 </div>
                 <template #footer class="flex items-center justify-between p-4">
@@ -33,11 +33,11 @@ const props = defineProps({
                         <div class="flex-1">
                             <span class="text-sm font-medium">{{ article.author.nick }}</span>
                         </div>
-                        <a :href="`#article-${article.id}`" class="text-sm font-semibold text-primary hover:underline"
+                        <NuxtLink :to="`/p/${article.slug}`" class="text-sm font-semibold text-primary hover:underline"
                             :aria-label="`Read more about ${article.title}`">
                             Read more
                             <Icon name="weui:arrow-filled" />
-                        </a>
+                        </NuxtLink>
                     </div>
                 </template>
             </UCard>
