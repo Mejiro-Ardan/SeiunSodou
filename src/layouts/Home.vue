@@ -19,7 +19,7 @@ const isCarouselVisible = ref(false);
 
 // 获取文章数据的函数
 const fetchArticles = async (pageNumber) => {
-    const response = await $fetch(`/api/posts/get/list?page=${pageNumber}`);
+    const response = await $fetch(`/api/articles/get/list?page=${pageNumber}`);
     newsArticles.value = response.articles;
     totalPages.value = response.totalPages; // 假设API返回totalPages
 };

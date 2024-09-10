@@ -71,5 +71,16 @@
   "license": "许可",
   "bookmark": "书签",
   "share": "分享",
-  "ccByNcSa": "CC BY-NC-SA 4.0"
+  "ccByNcSa": "CC BY-NC-SA 4.0",
+  "Writepage": "创建新文章",
+  "write": "写作",
+  "content": "内容",
+  "writeNewChapter": "创建新篇章",
+  "enterTitle": "请输入标题",
+  "enterMarkdown": "在此输入Markdown文本",
+  "preview": "预览",
+  "noContent": "尚未输入可预览的内容",
+  "tags": "标签",
+  "category": "分类",
+  "submit": "提交"
 }

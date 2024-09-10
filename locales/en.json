@@ -71,5 +71,16 @@
   "license": "License",
   "bookmark": "Bookmark",
   "share": "Share",
-  "ccByNcSa": "CC BY-NC-SA 4.0"
+  "ccByNcSa": "CC BY-NC-SA 4.0",
+  "Writepage": "Create new article",
+  "write": "Write",
+  "writeNewChapter": "Write New Chapter",
+  "enterTitle": "Enter Title",
+  "content": "Content",
+  "enterMarkdown": "Enter Markdown Text Here",
+  "preview": "Preview",
+  "noContent": "No content entered for preview",
+  "tags": "Tags",
+  "category": "Category",
+  "submit": "Submit"
 }

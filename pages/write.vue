@@ -1,12 +1,11 @@
 <script setup>
 import { computed } from 'vue'
-
-import SignIn from '@/layouts/auth/signin.vue'
+import WritePage from '@/layouts/Write.vue'
 
 const { t } = useI18n();
 
 const PageName = computed(() => {
-    return `${t('signIn')} - ${t('Sitename')}`;
+    return `${t('Writepage')} - ${t('Sitename')}`;
 });
 
 useSeoMeta({
@@ -19,5 +18,5 @@ defineOgImageComponent('NuxtSeo');
 </script>
 
 <template>
-    <SignIn />
+    <WritePage />
 </template>

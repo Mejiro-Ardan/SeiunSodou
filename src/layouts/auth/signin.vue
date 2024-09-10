@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import sha256 from 'crypto-js/sha256';
 import { useAuthStore } from '@/stores/verifyAuth';
 
@@ -55,6 +55,7 @@ const handleLogin = async () => {
 };
 
 await authStore.initializeToken();
+
 if (authStore.Status && authStore.Status.code === '200') {
     await navigateTo('/auth/');
 }
@@ -79,14 +80,16 @@ watch(() => authStore.Status, async (newStatus) => {
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:mail-outline" />
                             <input type="text" class="grow border-none focus:ring-0" v-model="email"
-                                :placeholder="$t('emailPlaceholder')" @keyup.enter="passwordInput.focus()" ref="emailInput" />
+                                :placeholder="$t('emailPlaceholder')" @keyup.enter="passwordInput.focus()"
+                                ref="emailInput" />
                         </label>
                     </div>
                     <div class="space-y-2">
                         <label class="input input-bordered flex items-center gap-2">
                             <Icon name="material-symbols:password" />
                             <input type="password" class="grow border-none focus:ring-0" v-model="password"
-                                :placeholder="$t('passwordPlaceholder')" @keyup.enter="handleLogin" ref="passwordInput" />
+                                :placeholder="$t('passwordPlaceholder')" @keyup.enter="handleLogin"
+                                ref="passwordInput" />
                         </label>
                         <NuxtLink class="ml-auto inline-block text-sm underline" to="/auth/reset">
                             {{ $t('forgotPassword') }}

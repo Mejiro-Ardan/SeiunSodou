@@ -93,10 +93,8 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                 <!-- Navigation Links -->
                 <div class="flex flex-1 items-center space-x-4">
                     <template v-for="(item, index) in NavigationTopConfig.sections" :key="index">
-                        <NuxtLink role="button" :to="item.path" :class="{
-                            'font-bold': $route.path === item.path,
-                            'text-gray-500 dark:text-gray-400': $route.path !== item.path
-                        }" class="text-base btn">
+                        <NuxtLink role="button" :to="item.path" v-if="$route.path !== item.path"
+                            class="btn text-white btn-sm bg-primary hover:bg-primary/90">
                             {{ $t(item.name) }}
                         </NuxtLink>
                     </template>

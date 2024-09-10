@@ -54,6 +54,9 @@ export async function check_db(dbName) {
         await connectWithTimeout(client);
         const dblist = await client.db().admin().listDatabases();
         return dblist.databases.some(db => db.name === dbName);
+    } catch (error) {
+        console.error(`检查数据库时出错: ${error.message}`);
+        return false;
     } finally {
         await client.close();
     }
@@ -76,6 +79,9 @@ export async function init_db(dbName) {
         await db.createCollection('pending_verifications');
         const collist = await db.listCollections().toArray();
         return collist.some(col => col.name === 'users') && collist.some(col => col.name === 'articles');
+    } catch (error) {
+        console.error(`初始化数据库时出错: ${error.message}`);
+        return false;
     } finally {
         await client.close();
     }
@@ -96,11 +102,13 @@ export async function db_read(dbName, collectionName, filter = {}, options = {})
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
         return await collection.find(filter, options).toArray();
+    } catch (error) {
+        console.error(`读取数据时出错: ${error.message}`);
+        return [];
     } finally {
         await client.close();
     }
 }
-
 
 /**
  * 向数据库中插入数据。
@@ -117,6 +125,9 @@ export async function db_insert(dbName, collectionName, data) {
         const collection = db.collection(collectionName);
         await collection.insertOne(data);
         return true;
+    } catch (error) {
+        console.error(`插入数据时出错: ${error.message}`);
+        return false;
     } finally {
         await client.close();
     }
@@ -136,6 +147,9 @@ export async function db_find(dbName, collectionName, data) {
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
         return await collection.findOne(data);
+    } catch (error) {
+        console.error(`查找数据时出错: ${error.message}`);
+        return null;
     } finally {
         await client.close();
     }
@@ -157,6 +171,9 @@ export async function db_update(dbName, collectionName, query, data) {
         const collection = db.collection(collectionName);
         await collection.updateOne(query, { $set: data });
         return true;
+    } catch (error) {
+        console.error(`更新数据时出错: ${error.message}`);
+        return false;
     } finally {
         await client.close();
     }
@@ -177,6 +194,9 @@ export async function db_delete(dbName, collectionName, query) {
         const collection = db.collection(collectionName);
         await collection.deleteOne(query);
         return true;
+    } catch (error) {
+        console.error(`删除数据时出错: ${error.message}`);
+        return false;
     } finally {
         await client.close();
     }
@@ -196,6 +216,40 @@ export async function db_count(dbName, collectionName, filter = {}) {
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
         return await collection.countDocuments(filter);
+    } catch (error) {
+        console.error(`获取文档总数时出错: ${error.message}`);
+        return 0;
+    } finally {
+        await client.close();
+    }
+}
+
+/**
+ * 从数据库中获取某个字段的所有唯一值
+ * @param {string} dbName - 数据库名称
+ * @param {string} collectionName - 集合名称
+ * @param {string} fieldName - 需要获取唯一值的字段名
+ * @returns {Promise<Array>} 返回包含所有唯一字段值的数组
+ */
+export async function db_getUniqueFieldValues(dbName, collectionName, fieldName) {
+    const client = mongoClient();
+    try {
+        await connectWithTimeout(client);
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+
+        // 使用聚合管道从数据库中获取唯一的字段值
+        const result = await collection.aggregate([
+            { $match: { [fieldName]: { $exists: true } } }, // 仅匹配包含指定字段的文档
+            { $group: { _id: `$${fieldName}` } }, // 按照指定字段分组
+            { $project: { _id: 0, value: "$_id" } } // 投影字段，返回字段值
+        ]).toArray();
+
+        // 从聚合结果中提取唯一字段值
+        return result.map(item => item.value);
+    } catch (error) {
+        console.error(`获取唯一字段值时出错: ${error.message}`);
+        return [];
     } finally {
         await client.close();
     }

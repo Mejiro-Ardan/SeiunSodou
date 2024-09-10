@@ -71,5 +71,16 @@
   "license": "ライセンス",
   "bookmark": "ブックマーク",
   "share": "共有",
-  "ccByNcSa": "CC BY-NC-SA 4.0"
+  "ccByNcSa": "CC BY-NC-SA 4.0",
+  "Writepage": "新しい記事を作成する",
+  "write": "記事を書く",
+  "content": "コンテンツ",
+  "writeNewChapter": "新しい章を書く",
+  "enterTitle": "タイトルを入力してください",
+  "enterMarkdown": "ここにMarkdownテキストを入力してください",
+  "preview": "プレビュー",
+  "noContent": "プレビューできる内容がまだ入力されていません",
+  "tags": "タグ",
+  "category": "カテゴリー",
+  "submit": "送信"
 }

@@ -13,7 +13,9 @@ useSeoMeta({
     title: PageName.value,
     ogTitle: t('Sitename'),
     description: t('description'),
-})
+});
+
+defineOgImageComponent('NuxtSeo');
 </script>
 
 <template>

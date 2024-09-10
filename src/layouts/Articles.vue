@@ -83,47 +83,52 @@ const article = props.articles
 
         <!-- License 和 操作按钮 -->
         <UCard>
-            <div class="flex items-center justify-between p-6">
-                <div class="flex items-center space-x-4">
+            <div class="flex flex-col lg:flex-row items-center lg:justify-between p-6">
+                <div class="flex flex-col lg:flex-row items-start space-y-4 lg:space-y-0 lg:space-x-4 w-full lg:w-auto">
                     <div
-                        class="relative transition overflow-hidden bg-[var(--license-block-bg)] py-5 px-6 mb-6 rounded-xl license-container onload-animation">
-                        <div class="transition font-bold text-black/75 dark:text-white/75">
+                        class="relative transition overflow-hidden bg-[var(--license-block-bg)] py-5 px-6 rounded-xl license-container onload-animation w-full">
+                        <div
+                            class="transition font-bold text-black/75 dark:text-white/75 text-ellipsis overflow-hidden whitespace-nowrap">
                             {{ article.title }}
                         </div>
-                        <a :href="`${appConfig.SiteConfig.SiteURL}${$route.fullPath}`" class="link text-primary">
+                        <a :href="`${appConfig.SiteConfig.SiteURL}${$route.fullPath}`"
+                            class="link text-primary block mt-1">
                             {{ appConfig.SiteConfig.SiteURL + $route.fullPath }}
                         </a>
-                        <div class="flex gap-6 mt-2">
-                            <div>
+                        <div class="flex flex-col lg:flex-row gap-6 mt-2">
+                            <div class="flex flex-col">
                                 <div class="transition text-black/30 dark:text-white/30 text-sm">{{ $t('author') }}
                                 </div>
-                                <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">{{
-                                    article.author.nick }}</div>
+                                <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">
+                                    {{ article.author.nick }}
+                                </div>
                             </div>
-                            <div>
+                            <div class="flex flex-col">
                                 <div class="transition text-black/30 dark:text-white/30 text-sm">{{ $t('createdAt') }}
                                 </div>
                                 <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">
                                     {{ dayjs(article.created).format('YYYY-MM-DD HH:mm') }}
                                 </div>
                             </div>
-                            <div v-if="article.modified">
+                            <div v-if="article.modified" class="flex flex-col">
                                 <div class="transition text-black/30 dark:text-white/30 text-sm">{{ $t('modifiedAt') }}
                                 </div>
                                 <div class="transition text-black/75 dark:text-white/75 whitespace-nowrap">
                                     {{ dayjs(article.modified).format('YYYY-MM-DD HH:mm') }}
                                 </div>
                             </div>
-                            <div>
+                            <div class="flex flex-col">
                                 <div class="transition text-black/30 dark:text-white/30 text-sm">{{ $t('license') }}
                                 </div>
                                 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
-                                    class="link text-primary whitespace-nowrap">{{ $t('ccByNcSa') }}</a>
+                                    class="link text-primary whitespace-nowrap">
+                                    {{ $t('ccByNcSa') }}
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex flex-wrap space-x-2 mt-4 lg:mt-0">
                     <button class="btn btn-outline" size="icon">
                         <Icon name="material-symbols:bookmark-add-outline" class="h-6 w-6" />
                         <span class="sr-only">{{ $t('bookmark') }}</span>

@@ -12,7 +12,12 @@ const runtimeEnv = {
   MONGO_HOST: process.env.MONGO_HOST,
   MONGO_PORT: process.env.MONGO_PORT,
   MONGO_USER: process.env.MONGO_USER,
-  MONGO_PASSWORD: process.env.MONGO_PASSWORD
+  MONGO_PASSWORD: process.env.MONGO_PASSWORD,
+  S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+  S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+  S3_ENDPOINT: process.env.S3_ENDPOINT,
+  S3_BUCKET: process.env.S3_BUCKET,
+  ZHIPU_TOKEN: process.env.ZHIPU_TOKEN
 };
 
 export default defineNuxtConfig({
@@ -26,7 +31,8 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@pinia/nuxt",
     "nuxtjs-naive-ui",
-    'seiunsodou_mdc'
+    'seiunsodou_mdc',
+    'nuxt-og-image'
   ],
   runtimeConfig: {
     ...runtimeEnv
@@ -35,6 +41,11 @@ export default defineNuxtConfig({
     notifications: {
       position: 'top-0 left-0'
     }
+  },
+  ogImage: {
+    fonts: [
+      'Noto+Sans+SC:400'
+    ]
   },
   compatibilityDate: '2024-08-13',
   site: {
@@ -146,6 +157,6 @@ export default defineNuxtConfig({
         'mdc',
         'nginx'
       ]
-    },
-  }
+    }
+  },
 });

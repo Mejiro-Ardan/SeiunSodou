@@ -12,6 +12,11 @@ export const appConfig = {
                 icon: 'mdi:home',
                 path: '/'
             },
+            {
+                name: 'write',
+                icon: 'jam:write',
+                path: '/write'
+            },
         ],
         copyright: {
             StartDate: 2024,
