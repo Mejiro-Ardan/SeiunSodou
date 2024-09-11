@@ -35,7 +35,10 @@ export default defineNuxtConfig({
     'nuxt-og-image'
   ],
   runtimeConfig: {
-    ...runtimeEnv
+    ...runtimeEnv,
+    public: {
+      baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : appConfig.SiteConfig.SiteURL,
+    }
   },
   ui: {
     notifications: {

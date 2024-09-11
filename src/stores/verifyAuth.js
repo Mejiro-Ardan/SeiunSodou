@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useRuntimeConfig } from '#imports';  // 导入 runtime config
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -10,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
         async setToken(token) {
             this.token = token;
             const tokenCookie = useCookie('token');
-            tokenCookie.value = token; // 不设置 expires 选项
+            tokenCookie.value = token;
             await this.verify();
         },
         clearToken() {
@@ -23,6 +24,7 @@ export const useAuthStore = defineStore('auth', {
             userInfoCookie.value = null;
         },
         async verify() {
+            const RuntimeConfig = useRuntimeConfig();
             try {
                 const data = await $fetch('/api/status/verify_auth', {
                     method: 'POST',
@@ -30,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.token}`
                     },
-                    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+                    baseURL: RuntimeConfig.public.baseURL
                 });
                 if (data.code === "200") {
                     this.Status = { code: "200", message: "login_success", uid: data.uid, tokenCreated: data.tokenCreated, status: "success" };
@@ -56,6 +58,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
         async get_userinfo() {
+            const RuntimeConfig = useRuntimeConfig();
             const tokenCookie = useCookie('token');
             const token = tokenCookie.value;
 
@@ -78,7 +81,7 @@ export const useAuthStore = defineStore('auth', {
                                 'Content-Type': 'application/json',
                                 'Authorization': `Bearer ${this.token}`
                             },
-                            baseURL: process.env.BASE_URL || 'http://localhost:3000'
+                            baseURL: RuntimeConfig.public.baseURL
                         });
                         if (data) {
                             this.userInfo = data;
