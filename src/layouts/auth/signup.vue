@@ -109,10 +109,10 @@ const sendCaptcha = async () => {
         const data = await response.json();
         if (data.code != 200) {
             if (data.message == 'wait_before_resend') {
-                toast.add({ title: t(data.message).replace('[wait_time]', String(data.wait_time)), color: "red" })
+                toast.add({ title: t(data.message).replace('[wait_time]', String(data.wait_time)), color: "red", icon: "material-symbols:error-outline" })
                 sendCaptchaStatus.value = false
             } else {
-                toast.add({ title: t(data.message), color: "red" })
+                toast.add({ title: t(data.message), color: "red", icon: "material-symbols:error-outline" })
                 sendCaptchaStatus.value = false
             }
         } else {
@@ -120,7 +120,7 @@ const sendCaptcha = async () => {
             sendCaptchaStatus.value = false
         }
     } catch (error) {
-        toast.add({ title: error, color: "red" })
+        toast.add({ title: error, color: "red", icon: "material-symbols:error-outline" })
         sendCaptchaStatus.value = false
     }
 };
@@ -146,14 +146,14 @@ const handleSubmit = async () => {
         });
         const data = await response.json();
         if (data.code != 200) {
-            toast.add({ title: t(data.message), color: "red" })
+            toast.add({ title: t(data.message), color: "red", icon: "material-symbols:error-outline" })
         } else {
             toast.add({ title: t(data.message) })
             toast.add({ title: t('redirecting_to_login') })
             await navigateTo('/auth/signin');
         }
     } catch (error) {
-        toast.add({ title: error, color: "red" })
+        toast.add({ title: error, color: "red", icon: "material-symbols:error-outline" })
     } finally {
         isSubmitting.value = false;
     }

@@ -9,10 +9,10 @@ const { t } = useI18n();
 
 const NavigationTopConfig = appConfig.NavigationTopConfig;
 
-const userInfo = ref();
+const userInfo = ref(null);
 const items = ref([]);
 
-const signinStatus = ref();
+const signinStatus = ref(null); // null 表示正在加载
 
 const updateUserInfo = async () => {
     await authStore.initializeToken();
@@ -61,27 +61,39 @@ const updateUserInfo = async () => {
             }],
             [{
                 label: t('signIn'),
-                icon: "ri:login-box-line",
+                icon: 'ri:login-box-line',
                 click: () => navigateTo('/auth/signin')
-            }], [{
+            }],
+            [{
                 label: t('signUp'),
-                icon: "ri:file-list-2-line",
+                icon: 'ri:file-list-2-line',
                 click: () => navigateTo('/auth/signup')
             }]
         ];
     }
 };
 
-await updateUserInfo();
-watch(route, updateUserInfo, { immediate: true });
-watch(() => authStore.token, updateUserInfo, { immediate: true });
-</script>
+// 避免重复调用的防抖机制
+const debouncedUpdateUserInfo = debounce(updateUserInfo, 300);
 
+await updateUserInfo();
+watch(route, debouncedUpdateUserInfo, { immediate: true });
+watch(() => authStore.token, debouncedUpdateUserInfo, { immediate: true });
+
+function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
+}
+</script>
 <template>
-    <div class="flex flex-col w-full min-h-screen bg-white dark:bg-gray-900">
-        <header class="flex items-center h-16 px-4 border-b bg-white dark:bg-gray-800 md:px-6">
+    <div class="flex flex-col w-full min-h-screen bg-gray-50 dark:bg-gray-800">
+        <header
+            class="flex items-center h-16 px-4 border-b border-gray-300 bg-gray-100 dark:border-gray-700 dark:bg-gray-900 md:px-6">
             <nav
-                class="flex w-full items-center gap-6 text-lg font-medium text-gray-900 dark:text-gray-100 md:gap-5 md:text-sm">
+                class="flex w-full items-center gap-6 text-lg font-medium text-gray-900 dark:text-gray-200 md:gap-5 md:text-sm">
                 <!-- Logo -->
                 <div class="flex items-center">
                     <div class="mask mask-squircle w-12 h-12 overflow-hidden">
@@ -94,7 +106,7 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                 <div class="flex flex-1 items-center space-x-4">
                     <template v-for="(item, index) in NavigationTopConfig.sections" :key="index">
                         <NuxtLink role="button" :to="item.path" v-if="$route.path !== item.path"
-                            class="btn text-white btn-sm bg-primary hover:bg-primary/90">
+                            class="btn text-white btn-sm bg-primary hover:bg-primary/90 dark:bg-primary/80">
                             {{ $t(item.name) }}
                         </NuxtLink>
                     </template>
@@ -124,7 +136,8 @@ watch(() => authStore.token, updateUserInfo, { immediate: true });
                     <template v-else>
                         <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }"
                             :popper="{ placement: 'bottom-start' }">
-                            <UButton role="button" class="btn text-white btn-sm bg-primary hover:bg-primary/90">
+                            <UButton role="button"
+                                class="btn text-white btn-sm bg-primary hover:bg-primary/90 dark:bg-primary/80">
                                 {{ $t('signIn') }}
                             </UButton>
                             <template #recommend>

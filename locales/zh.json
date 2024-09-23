@@ -82,5 +82,7 @@
   "noContent": "尚未输入可预览的内容",
   "tags": "标签",
   "category": "分类",
-  "submit": "提交"
+  "submit": "提交",
+  "uploadSuccess": "上传成功！",
+  "uploadFailed": "上传失败"
 }

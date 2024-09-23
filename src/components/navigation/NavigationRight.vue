@@ -28,22 +28,24 @@ watch(route, updateUserInfo);
     <div class="flex flex-col md:flex-row flex-1 gap-4 p-4 md:p-6">
         <!-- 主内容容器 -->
         <div class="flex-1 overflow-y-auto">
-            <div class="rounded-lg border bg-card w-full">
+            <div class="rounded-lg border bg-gray-100 dark:bg-gray-800 dark:border-gray-700 w-full">
                 <slot />
             </div>
         </div>
         <!-- 侧边栏 -->
         <div class="flex flex-col gap-4 w-full md:w-[250px] md:max-w-md md:sticky md:top-0">
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden" data-v0-t="card">
+            <div class="rounded-lg border bg-gray-100 dark:bg-gray-800 dark:border-gray-700 text-gray-800 dark:text-gray-300 shadow-sm overflow-hidden"
+                data-v0-t="card">
                 <template v-if="signinStatus">
                     <div class="p-4 text-center">
-                        <div class="space-y-1.5 flex flex-col items-center gap-2 bg-muted/50 p-4">
-                            <span class="relative flex shrink-0 overflow-hidden mask mask-squircle h-[4.5rem] w-[4.5rem]">
+                        <div class="space-y-1.5 flex flex-col items-center gap-2 bg-gray-50 dark:bg-gray-800 p-4">
+                            <span
+                                class="relative flex shrink-0 overflow-hidden mask mask-squircle h-[4.5rem] w-[4.5rem]">
                                 <NuxtImg class="h-full w-full" :src="userInfo.avatar" />
                             </span>
                             <div class="grid gap-0.5 text-center">
                                 <div class="font-semibold text-lg p-1">{{ userInfo.nick }}</div>
-                                <div class="text-sm text-muted-foreground">{{ userInfo.bio }}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">{{ userInfo.bio }}</div>
                             </div>
                         </div>
                         <div class="divider"></div>
@@ -51,18 +53,21 @@ watch(route, updateUserInfo);
                             <table class="w-full mt-4 mb-4">
                                 <tbody>
                                     <tr>
-                                        <!-- todo : -->
+                                        <!-- 用户信息统计 -->
                                         <td class="text-center">
                                             <span class="font-semibold text-base">{{ userInfo.post_count }}</span>
-                                            <div class="text-muted-foreground text-sm mt-1">{{ $t('post') }}</div>
+                                            <div class="text-gray-600 dark:text-gray-400 text-sm mt-1">{{ $t('post') }}
+                                            </div>
                                         </td>
                                         <td class="text-center">
                                             <span class="font-semibold text-base">0</span>
-                                            <div class="text-muted-foreground text-sm mt-1">{{ $t('favorites') }}</div>
+                                            <div class="text-gray-600 dark:text-gray-400 text-sm mt-1">{{
+                                                $t('favorites') }}</div>
                                         </td>
                                         <td class="text-center">
                                             <span class="font-semibold text-base">0</span>
-                                            <div class="text-muted-foreground text-sm mt-1">{{ $t('following') }}</div>
+                                            <div class="text-gray-600 dark:text-gray-400 text-sm mt-1">{{
+                                                $t('following') }}</div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -72,11 +77,11 @@ watch(route, updateUserInfo);
                 </template>
                 <template v-else>
                     <div class="p-4 text-center">
-                        <div class="space-y-1.5 flex flex-col items-center gap-2 bg-muted/50 p-4">
+                        <div class="space-y-1.5 flex flex-col items-center gap-2 bg-gray-50 dark:bg-gray-700 p-4">
                             <div class="grid gap-0.5 text-center text-base sm:text-lg">
                                 {{ $t('Sitename') }}
                             </div>
-                            <div class="text-sm sm:text-base text-muted-foreground">
+                            <div class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                                 {{ $t('description') }}
                             </div>
                         </div>

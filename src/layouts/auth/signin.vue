@@ -21,7 +21,7 @@ const handleLogin = async () => {
     }
 
     if (!password.value) {
-        toast.add({ title: t('email_password_required'), color: "red" });
+        toast.add({ title: t('email_password_required'), color: "red", icon: "material-symbols:error-outline" });
         return;
     }
 
@@ -42,13 +42,13 @@ const handleLogin = async () => {
         const data = await response.json();
 
         if (data.code != 200) {
-            toast.add({ title: t(data.message), color: "red" });
+            toast.add({ title: t(data.message), color: "red", icon: "material-symbols:error-outline" });
         } else {
             toast.add({ title: t(data.message) });
             authStore.setToken(data.token);
         }
     } catch (error) {
-        toast.add({ title: error.toString(), color: "red" });
+        toast.add({ title: error.toString(), color: "red", icon: "material-symbols:error-outline" });
     } finally {
         isSubmitting.value = false;
     }

@@ -3,7 +3,7 @@ import { ref, nextTick, onMounted } from 'vue';
 import { NCarousel, NPagination } from 'naive-ui';
 
 import ArticlesPanel from '@/components/ArticlesStreamPanel.vue';
-import Footer from '@/components/Footer.vue'
+import Footer from '@/components/Footer.vue';
 
 // 当前页码
 const page = ref(1);
@@ -39,15 +39,14 @@ const handlePageChange = async () => {
     document.getElementById('articles-panel').scrollIntoView({ behavior: 'smooth' });
 };
 </script>
-
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <NCarousel id="carousel" v-show="isCarouselVisible" dot-type="line" dot-placement="right" direction="direction"
             mousewheel draggable keyboard autoplay show-arrow>
-            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=220" />
-            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=202" />
-            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=230" />
-            <img class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=20" />
+            <NuxtImg class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=220" loading="eager" decoding="async" />
+            <NuxtImg class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=202" loading="eager" decoding="async" />
+            <NuxtImg class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=230" loading="eager" decoding="async" />
+            <NuxtImg class="carousel-img" src="https://api-space.tnxg.top/images/wallpaper/?type=cdn&123=20" loading="eager" decoding="async" />
         </NCarousel>
         <ArticlesPanel id="articles-panel" :ArticlesStream="newsArticles" class="mt-4" />
         <NPagination v-model:page="page" :page-count="totalPages" class="mt-4 mb-8" @update:page="handlePageChange" />
