@@ -1,5 +1,8 @@
-<script setup>
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useAuthStore } from '@/stores/verifyAuth';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 const appConfig = useAppConfig();
 const toast = useToast();
@@ -9,10 +12,10 @@ const { t } = useI18n();
 
 const NavigationTopConfig = appConfig.NavigationTopConfig;
 
-const userInfo = ref(null);
-const items = ref([]);
+const userInfo = ref<UserInfo | null>(null);
+const items = ref<any[]>([]);
 
-const signinStatus = ref(null); // null 表示正在加载
+const signinStatus = ref<boolean | null>(null);
 
 const updateUserInfo = async () => {
     await authStore.initializeToken();
@@ -22,7 +25,7 @@ const updateUserInfo = async () => {
         signinStatus.value = true;
         items.value = [
             [{
-                label: userInfo.value.uid,
+                label: userInfo.value?.uid,
                 slot: 'account',
                 disabled: true
             }], [{
@@ -74,19 +77,19 @@ const updateUserInfo = async () => {
 };
 
 // 避免重复调用的防抖机制
+const debounce = (fn: Function, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return (...args: any[]) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
+};
+
 const debouncedUpdateUserInfo = debounce(updateUserInfo, 300);
 
 await updateUserInfo();
 watch(route, debouncedUpdateUserInfo, { immediate: true });
 watch(() => authStore.token, debouncedUpdateUserInfo, { immediate: true });
-
-function debounce(fn, delay) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), delay);
-    };
-}
 </script>
 <template>
     <div class="flex flex-col w-full min-h-screen bg-gray-50 dark:bg-gray-800">

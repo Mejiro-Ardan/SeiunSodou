@@ -1,10 +1,7 @@
-<script setup>
-const props = defineProps({
-    ArticlesStream: {
-        type: Array,
-        required: true
-    }
-})
+<script setup lang="ts">
+const props = defineProps<{
+    ArticlesStream: PagingData['articles']
+}>();
 </script>
 
 <template>
